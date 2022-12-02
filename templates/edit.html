@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{% block title %} Chapter Edit Actions {% endblock %}</h1>
+    <!-- Dropdown Menu of existing chapters to edit-->
+    <form name="selectChapter" action="{{url_for('update', auth = auth)}}" method="POST">
+        <label for="lesson-list">Choose a chapter list to edit:</label>
+        <select id="lesson-list" name="lesson-list">
+            <OPTION value="None">Select a Chapter</option>
+            {% for row in vocabulary %}
+                <OPTION value="{{row[0]}}">Chapter {{row[0]}}</option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="Edit">
+    </form>
+    <br>
+    <!-- Dropdown Menu of existing chapters to delete-->
+    <form name="deleteChapter" action="{{url_for('delete', auth = auth)}}" method="POST">
+        <label for="delete-list">Choose a chapter list to delete:</label>
+        <select id="delete-list" name="delete-list">
+            <OPTION value="None">Select a Chapter</option>
+            {% for row in vocabulary %}
+                <OPTION value="{{row[0]}}">Chapter {{row[0]}}</option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="Delete">
+    </form>
+    <br>
+    <!-- Add New Chapter-->
+    <form name="selectChapter" action="{{url_for('add', auth = auth)}}" method="POST">
+        <input type="submit" value="Add New Chapter">
+    </form>
+{% endblock %}

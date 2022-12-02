@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{% block title %} Add Chapter List {% endblock %}</h1>
+    <!-- Go back to Edit page without losing session authentication-->
+    <form name="selectChapter" action="{{url_for('edit', auth = auth)}}" method="POST">
+        <input type="submit" value="Back to Edit Page">
+    </form>
+    <br>
+    <form name="add" action="/adding/{{auth}}"method="POST">
+        <label for="lesson">Chapter</label>
+        <br>
+        <input type="number" name="lesson"
+                placeholder="Chapter number"
+                value="{{ request.form['lesson'] }}"></input>
+        <br>
+        <label for="word">Add words here</label>
+        <button type="submit">Submit</button>
+        <br>
+        <textarea name="word"
+                placeholder="List words separated by a newline. Press &quot;Enter&quot; after each word"
+                rows="60"
+                cols="60"
+                >{{ request.form['word']}}</textarea>
+        <br>       
+    </form>
+    
+{% endblock %}

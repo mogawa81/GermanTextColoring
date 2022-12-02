@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!--  if current_user.is_authenticated  -->
+    <h1>{% block title %} Update Chapter List {% endblock %}</h1>
+    <form name="editList" action="/update/{{lesson_get}}/{{auth}}" method="POST">
+        <label for="word">Chapter {{lesson_get}} List</label>
+        <button type="submit">Update</button>
+        <br>
+        <textarea name="word"
+                placeholder="List words separated by a newline. Press &quot;Enter&quot; after each word"
+                rows="60"
+                cols="60"
+                >{{ request.form['word'] or lesson_str}}</textarea>
+        <br>
+    </form>
+<!--  endif  -->
+{% endblock %}

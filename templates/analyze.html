@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{% block title %} Analyze a text {% endblock %}</h1>
+    <p>To analyze a text, copy and past a text in the text box. Words from all chapters will
+        be searched for in the text unless otherwise specified in the text box below:
+    </p>
+    <form method="post">
+        <input type="number" name="chapters"
+               placeholder="Enter up to which chapter to analyze"
+               value="{{ request.form['chapters'] }}"></input>
+
+        <br>
+        <textarea name="text"
+        placeholder="Copy and paste text here to analyze readability"
+        rows="15"
+        cols="60"
+        >{{ request.form['text'] }}</textarea>
+
+        <br>
+        <button type="submit">Submit</button>
+    </form>
+{% endblock %}
