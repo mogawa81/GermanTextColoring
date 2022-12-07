@@ -36,16 +36,19 @@ def get_db_connection():
     
     DATABASE_URL = os.environ.get('DATABASE_URL')
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
-    return conn.cursor()
+    cur = conn.cursor()
+    return [conn, cur]
 
 #check if table exists
 
 
 def get_lesson(lesson):
-    conn = get_db_connection()
+    l = get_db_connection()
+    conn = l[0]
+    cur = l[1]
     query = """SELECT * FROM vocabulary WHERE lesson = %s"""
-    conn.execute(query, (lesson,))
-    lesson_got = conn.fetchall()
+    cur.execute(query, (lesson,))
+    lesson_got = cur.fetchall()
     conn.close()
     if lesson_got is None:
         abort(404)
@@ -60,18 +63,20 @@ def login():
 def login_post():
     email = request.form.get('email')
     password = request.form.get('pass')
-    conn = get_db_connection()
+    l = get_db_connection()
+    conn = l[0]
+    cur = l[1]
     #CHECK IF USERNAME EXISTS IN THE PASSWORD DATABASE
     #returns 1 if exists, 0 if not
     query = """SELECT EXISTS (SELECT 1 FROM dbMasters WHERE email=%s)"""
-    conn.execute(query, (email,))
-    email_get = conn.fetchone()
+    cur.execute(query, (email,))
+    email_get = cur.fetchone()
     conn.commit()
     #IF USERNAME EXISTS IN THE DATABASE, CHECK IF THE PASSWORD IS CORRECT
     if email_get[0]:
         query1 = """SELECT pass FROM dbMasters WHERE email=%s"""
-        conn.execute(query1, (email,))
-        pass_get = conn.fetchone()
+        cur.execute(query1, (email,))
+        pass_get = cur.fetchone()
         conn.commit()
         if str(pass_get[0]) == password:
             #user = email_get[0]
@@ -91,9 +96,11 @@ def login_post():
 # homepage
 @app.route('/', methods=['GET','POST'])
 def index():
-    conn = get_db_connection()
-    conn.execute('SELECT DISTINCT lesson FROM vocabulary')
-    vocabulary = conn.fetchall()
+    l = get_db_connection()
+    conn = l[0]
+    cur = l[1]
+    cur.execute('SELECT DISTINCT lesson FROM vocabulary')
+    vocabulary = cur.fetchall()
     conn.close()
     lesson_get = request.form.get('lesson-list')
     if request.method == 'POST':
@@ -118,9 +125,11 @@ def edit(auth):
         flash("Please log in to access the database")
         return redirect(url_for('login'))
     #add authentication
-    conn = get_db_connection()
-    conn.execute('SELECT DISTINCT lesson FROM vocabulary')
-    vocabulary = conn.fetchall()
+    l = get_db_connection()
+    conn = l[0]
+    cur = l[1]
+    cur.execute('SELECT DISTINCT lesson FROM vocabulary')
+    vocabulary = cur.fetchall()
     conn.close()
     return render_template('edit.html', vocabulary=vocabulary, auth=auth)
 
@@ -161,7 +170,9 @@ def update2(lesson_get, auth):
                 lesson_str += word['word'] + "\n"
             return render_template("update.html", lesson_str=lesson_str, lesson_get=lesson_get, auth=auth)
         else:
-            conn = get_db_connection()
+            l = get_db_connection()
+            conn = l[0]
+            cur = l[1]
             words = text.split('\r')
             lesson_list = []
             for item in get_lesson(lesson_get):
@@ -173,14 +184,14 @@ def update2(lesson_get, auth):
                     #print(word)
                     query = """INSERT INTO vocabulary (lesson, word) VALUES (%s, %s)"""
                     tuple1 = (lesson_get, word)
-                    conn.execute(query, tuple1)
+                    cur.execute(query, tuple1)
                     conn.commit()
                 elif word in lesson_list:
                     lesson_list.remove(word)
             #DELETE WORDS IN DATABASE LEFT IN LESSON LIST
             for leftOver in lesson_list:
                 print(leftOver)
-                conn.execute('DELETE FROM vocabulary WHERE word = %s', (leftOver,))
+                cur.execute('DELETE FROM vocabulary WHERE word = %s', (leftOver,))
                 conn.commit()
             conn.close()
             flash("Chapter "+str(lesson_get)+" has been updated")
@@ -199,8 +210,10 @@ def delete(auth):
         print("no lesson selected")
         return redirect(url_for('edit', auth=auth))
     else:
-        conn = get_db_connection()
-        conn.execute('DELETE FROM vocabulary WHERE lesson = %s', (delete_get))
+        l = get_db_connection()
+        conn = l[0]
+        cur = l[1]
+        cur.execute('DELETE FROM vocabulary WHERE lesson = %s', (delete_get))
         conn.commit()
         conn.close()
         flash("Chapter "+str(delete_get)+" deleted.")
@@ -230,9 +243,11 @@ def add2(auth):
         elif not text:
             flash("At least 1 word is required!")
         else:
-            conn = get_db_connection()
-            conn.execute('SELECT DISTINCT lesson FROM vocabulary')
-            lessons = conn.fetchall()
+            l = get_db_connection()
+            conn = l[0]
+            cur = l[1]
+            cur.execute('SELECT DISTINCT lesson FROM vocabulary')
+            lessons = cur.fetchall()
             conn.commit()
             #lessons = lessons[0]
             for chapter in lessons:
@@ -245,7 +260,7 @@ def add2(auth):
                 word = word.strip('\n')
                 query = """INSERT INTO vocabulary (lesson, word) VALUES (%s, %s)"""
                 tuple1 = (lesson, word)
-                conn.execute(query, tuple1)
+                cur.execute(query, tuple1)
                 conn.commit()
             conn.close()
             flash("Chapter "+str(lesson)+" created successfully")
@@ -262,8 +277,9 @@ def analyze():
         if chapters == "":
             chapters = -1
         else:
-            conn = get_db_connection()
-            cur = conn.cursor()
+            l = get_db_connection()
+            conn = l[0]
+            cur = l[1]
             cur.execute("SELECT DISTINCT lesson FROM vocabulary")
             size = cur.fetchall()
             count = 0

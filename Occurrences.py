@@ -20,7 +20,8 @@ def compileWords(database, num):
     #cur = conn.cursor()
     
     DATABASE_URL = os.environ.get('DATABASE_URL')
-    cur = psycopg2.connect(DATABASE_URL, sslmode='require')
+    conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+    cur = conn.cursor()
     
     cur.execute("SELECT COUNT(*) FROM vocabulary")
     size = cur.fetchone()
@@ -29,14 +30,14 @@ def compileWords(database, num):
     wordBank = {"Readability":0, "Proper Nouns": []}
     cur.execute("SELECT word, lesson FROM vocabulary WHERE lesson BETWEEN 1 and "+ num)
     vocabList = cur.fetchall()
-    cur.commit()
+    conn.commit()
     for row in vocabList:
         #unpack table name, which is a tuple, into a string
         str_word = row[0]
         str_lesson = row[1]
         wordBank[str_word] = [str_lesson]
-        cur.commit()         
-    cur.close()
+        conn.commit()         
+    conn.close()
     return wordBank
 
 def lemmatize(line):
