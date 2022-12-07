@@ -1,6 +1,6 @@
 import spacy
 import nltk
-#nltk.download('punkt')
+nltk.download('punkt')
 import string
 #from nltk.corpus import stopwords
 from nltk import tokenize
