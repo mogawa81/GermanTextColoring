@@ -1,10 +1,10 @@
 import spacy
 import nltk
 import string
-from nltk.corpus import stopwords
-from nltk.tokenize import word_tokenize, sent_tokenize
+#from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
 from HanTa import HanoverTagger as ht
-import sqlite3 as db
+#import sqlite3 as db
 import re
 import psycopg2
 import os
