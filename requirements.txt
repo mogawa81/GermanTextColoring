@@ -1,6 +1,5 @@
 flask>=2.2.2
 psycopg2
-os
 nltk
 HanTa
 spacy
