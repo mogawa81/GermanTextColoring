@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS vocabulary;
 
 CREATE TABLE vocabulary (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id SERIAL PRIMARY KEY,
     lesson INTEGER NOT NULL,
     word TEXT NOT NULL
 );
