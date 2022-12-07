@@ -50,6 +50,7 @@ def lemmatize(line):
         
 def extractProperNouns(text):
     tagger = ht.HanoverTagger('morphmodel_ger.pgz')
+    nltk.download('word_tokenize')
     words = nltk.word_tokenize(text)
     tokens=[word for (word,x,pos) in tagger.tag_sent(words,taglevel= 1) if pos == 'NE']
     return tokens
