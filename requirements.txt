@@ -1,4 +1,4 @@
-flask>=3.10.8
+flask>=2.2.2
 string
 random
 psycopg2
