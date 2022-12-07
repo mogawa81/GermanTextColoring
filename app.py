@@ -6,6 +6,7 @@ import string
 import random
 import psycopg2
 import os
+from init_db import check
 
 # from flask_login import LoginManager, login_required, login_user
 # import flask.ext.login as flask_login
@@ -15,6 +16,7 @@ import os
 
 app = Flask(__name__, template_folder='templates')
 app.config['SECRET_KEY'] = 'cloudyWalls'
+check()
 
 #secret_key = "cloudyWalls2023"
 
