@@ -7,20 +7,22 @@ import os
 
 DATABASE_URL = os.environ.get('DATABASE_URL')
 conn = psycopg2.connect(DATABASE_URL)
+cur = conn.cursor()
 
 #conn = mysql.connector.connect(host='localhost',
                              #database='database',
                              #user='root')
 #cur = conn.cursor(prepared=True)
-
-with open('schema.sql') as f:
-    conn.executescript(f.read())
+exists = cur.execute('SELECT 1 FROM vocabulary WHERE lesson=1 AND word="ich"').fetchone()
+if exists[0] == 0:
+    with open('schema.sql') as f:
+        conn.executescript(f.read())
 
 #cur = conn.cursor()
 
-cur.execute("INSERT INTO vocabulary (lesson, word) VALUES (%s, %s)", 
+    cur.execute("INSERT INTO vocabulary (lesson, word) VALUES (%s, %s)", 
             (1, 'ich'))
-cur.execute("INSERT INTO dbMasters (email, pass) VALUES (%s, %s)", ("mogawa@princeton.edu", "cloudyWalls"), ("jrankin@princeton.edu", "N!F7uH$1bEyO"), ("pmyers@luc.edu","theMebbo"))
+    cur.execute("INSERT INTO dbMasters (email, pass) VALUES (%s, %s)", ("mogawa@princeton.edu", "cloudyWalls"), ("jrankin@princeton.edu", "N!F7uH$1bEyO"), ("pmyers@luc.edu","theMebbo"))
 
 #numCount = 1
 #for line in f:

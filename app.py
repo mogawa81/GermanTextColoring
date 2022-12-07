@@ -36,6 +36,9 @@ def get_db_connection():
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     return conn.cursor()
 
+#check if table exists
+
+
 def get_lesson(lesson):
     conn = get_db_connection()
     query = """SELECT * FROM vocabulary WHERE lesson = %s"""
@@ -63,7 +66,7 @@ def login_post():
     #IF USERNAME EXISTS IN THE DATABASE, CHECK IF THE PASSWORD IS CORRECT
     if email_get[0]:
         query1 = """SELECT pass FROM dbMasters WHERE email=%s"""
-        pass_get = conn.execute(query, (email,)).fetchone()
+        pass_get = conn.execute(query1, (email,)).fetchone()
         conn.commit()
         if str(pass_get[0]) == password:
             #user = email_get[0]
