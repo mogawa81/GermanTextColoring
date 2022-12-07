@@ -1,8 +1,9 @@
 import spacy
 import nltk
+#nltk.download('punkt')
 import string
 #from nltk.corpus import stopwords
-from nltk.tokenize import word_tokenize
+from nltk import tokenize
 from HanTa import HanoverTagger as ht
 #import sqlite3 as db
 import re
@@ -50,8 +51,7 @@ def lemmatize(line):
         
 def extractProperNouns(text):
     tagger = ht.HanoverTagger('morphmodel_ger.pgz')
-    nltk.download('word_tokenize')
-    words = nltk.word_tokenize(text)
+    words = nltk.tokenize(text)
     tokens=[word for (word,x,pos) in tagger.tag_sent(words,taglevel= 1) if pos == 'NE']
     return tokens
 
