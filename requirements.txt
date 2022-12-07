@@ -1,5 +1,4 @@
 flask>=2.2.2
-string
 random
 psycopg2
 os
