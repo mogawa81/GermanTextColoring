@@ -9,7 +9,11 @@ import re
 import psycopg2
 import os
 
-nlp = spacy.load('de_core_news_md')
+try:
+    nlp = spacy.load('de_core_news_md')
+except: #if not present, download
+    spacy.cli.download('de_core_news_md')
+    nlp = spacy.load('de_core_news_md')
 
 def compileWords(database, num):
     #conn = db.connect(database)
