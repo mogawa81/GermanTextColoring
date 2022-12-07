@@ -1,15 +1,17 @@
 import sqlite3 as db
 import mysql.connector
+import psycopg2
+import os
 
 #conn = db.connect("database.db")
 
-#DATABASE_URL = os.environ.get('DATABASE_URL')
-#conn = psycopg2.connect(DATABASE_URL)
+DATABASE_URL = os.environ.get('DATABASE_URL')
+conn = psycopg2.connect(DATABASE_URL)
 
-conn = mysql.connector.connect(host='localhost',
-                             database='database',
-                             user='root')
-cur = conn.cursor(prepared=True)
+#conn = mysql.connector.connect(host='localhost',
+                             #database='database',
+                             #user='root')
+#cur = conn.cursor(prepared=True)
 
 with open('schema.sql') as f:
     conn.executescript(f.read())

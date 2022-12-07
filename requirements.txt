@@ -1,0 +1,9 @@
+flask
+string
+random
+psycopg2
+os
+nltk
+HanTa
+re
+spacy
