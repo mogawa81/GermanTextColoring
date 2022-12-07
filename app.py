@@ -44,7 +44,8 @@ def get_db_connection():
 def get_lesson(lesson):
     conn = get_db_connection()
     query = """SELECT * FROM vocabulary WHERE lesson = %s"""
-    lesson_got = conn.execute(query, (lesson,)).fetchall()
+    conn.execute(query, (lesson,))
+    lesson_got = conn.fetchall()
     conn.close()
     if lesson_got is None:
         abort(404)
@@ -63,12 +64,14 @@ def login_post():
     #CHECK IF USERNAME EXISTS IN THE PASSWORD DATABASE
     #returns 1 if exists, 0 if not
     query = """SELECT EXISTS (SELECT 1 FROM dbMasters WHERE email=%s)"""
-    email_get = conn.execute(query, (email,)).fetchone()
+    conn.execute(query, (email,))
+    email_get = conn.fetchone()
     conn.commit()
     #IF USERNAME EXISTS IN THE DATABASE, CHECK IF THE PASSWORD IS CORRECT
     if email_get[0]:
         query1 = """SELECT pass FROM dbMasters WHERE email=%s"""
-        pass_get = conn.execute(query1, (email,)).fetchone()
+        conn.execute(query1, (email,))
+        pass_get = conn.fetchone()
         conn.commit()
         if str(pass_get[0]) == password:
             #user = email_get[0]
@@ -89,7 +92,8 @@ def login_post():
 @app.route('/', methods=['GET','POST'])
 def index():
     conn = get_db_connection()
-    vocabulary = conn.execute('SELECT DISTINCT lesson FROM vocabulary').fetchall()
+    conn.execute('SELECT DISTINCT lesson FROM vocabulary')
+    vocabulary = conn.fetchall()
     conn.close()
     lesson_get = request.form.get('lesson-list')
     if request.method == 'POST':
@@ -115,7 +119,8 @@ def edit(auth):
         return redirect(url_for('login'))
     #add authentication
     conn = get_db_connection()
-    vocabulary = conn.execute('SELECT DISTINCT lesson FROM vocabulary').fetchall()
+    conn.execute('SELECT DISTINCT lesson FROM vocabulary')
+    vocabulary = conn.fetchall()
     conn.close()
     return render_template('edit.html', vocabulary=vocabulary, auth=auth)
 
@@ -226,7 +231,8 @@ def add2(auth):
             flash("At least 1 word is required!")
         else:
             conn = get_db_connection()
-            lessons = conn.execute('SELECT DISTINCT lesson FROM vocabulary').fetchall()
+            conn.execute('SELECT DISTINCT lesson FROM vocabulary')
+            lessons = conn.fetchall()
             conn.commit()
             #lessons = lessons[0]
             for chapter in lessons:
