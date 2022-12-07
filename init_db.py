@@ -14,7 +14,8 @@ def check():
                              #user='root')
     #cur = conn.cursor(prepared=True)
     query = """select exists(select * from information_schema.tables where table_name=%s)"""
-    exists = cur.execute(query, ('vocabulary',)).fetchone()
+    cur.execute(query, ('vocabulary',))
+    exists = cur.fetchone()
     if exists[0] == False:
         with open('schema.sql') as f:
             conn.executescript(f.read())
