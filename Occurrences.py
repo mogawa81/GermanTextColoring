@@ -6,12 +6,18 @@ from nltk.tokenize import word_tokenize, sent_tokenize
 from HanTa import HanoverTagger as ht
 import sqlite3 as db
 import re
+import psycopg2
+import os
 
 nlp = spacy.load('de_core_news_md')
 
 def compileWords(database, num):
-    conn = db.connect(database)
-    cur = conn.cursor()
+    #conn = db.connect(database)
+    #cur = conn.cursor()
+    
+    DATABASE_URL = os.environ.get('DATABASE_URL')
+    cur = psycopg2.connect(DATABASE_URL, sslmode='require')
+    
     cur.execute("SELECT COUNT(*) FROM vocabulary")
     size = cur.fetchone()
     if num == -1:

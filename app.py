@@ -4,6 +4,9 @@ import sqlite3
 from flask import Flask, render_template, request, url_for, flash, redirect, abort, Blueprint
 import string
 import random
+import psycopg2
+import os
+
 # from flask_login import LoginManager, login_required, login_user
 # import flask.ext.login as flask_login
 # from flask.ext.login import LoginManager, UserMixin
@@ -26,23 +29,18 @@ app.config['SECRET_KEY'] = 'cloudyWalls'
     #return User.get(user_id)
 
 def get_db_connection():
-    conn = sqlite3.connect('database.db')
-    conn.row_factory = sqlite3.Row
-    return conn
+    #conn = sqlite3.connect('database.db')
+    #conn.row_factory = sqlite3.Row
+    
+    DATABASE_URL = os.environ.get('DATABASE_URL')
+    conn = psycopg2.connect(DATABASE_URL, sslmode='require')
 
-def get_list(lesson):
-    conn = get_db_connection()
-    lessonList = conn.execute('SELECT * FROM vocabulary WHERE lesson = ?',
-                        (lesson,)).fetchall()
-    conn.close()
-    if lessonList is None:
-        abort(404)
-    return lessonList
+    return conn
 
 def get_lesson(lesson):
     conn = get_db_connection()
-    lesson_got = conn.execute('SELECT * FROM vocabulary WHERE lesson = ?',
-                        (lesson,)).fetchall()
+    query = """SELECT * FROM vocabulary WHERE lesson = %s"""
+    lesson_got = conn.execute(query, (lesson,)).fetchall()
     conn.close()
     if lesson_got is None:
         abort(404)
@@ -60,11 +58,13 @@ def login_post():
     conn = get_db_connection()
     #CHECK IF USERNAME EXISTS IN THE PASSWORD DATABASE
     #returns 1 if exists, 0 if not
-    email_get = conn.execute("SELECT EXISTS (SELECT 1 FROM dbMasters WHERE email=?)", (email,)).fetchone()
+    query = """SELECT EXISTS (SELECT 1 FROM dbMasters WHERE email=%s)"""
+    email_get = conn.execute(query, (email,)).fetchone()
     conn.commit()
     #IF USERNAME EXISTS IN THE DATABASE, CHECK IF THE PASSWORD IS CORRECT
     if email_get[0]:
-        pass_get = conn.execute("SELECT pass FROM dbMasters WHERE email=?", (email,)).fetchone()
+        query1 = """SELECT pass FROM dbMasters WHERE email=%s"""
+        pass_get = conn.execute(query, (email,)).fetchone()
         conn.commit()
         if str(pass_get[0]) == password:
             #user = email_get[0]
@@ -162,15 +162,16 @@ def update2(lesson_get, auth):
                 #ADD WORDS TO DATABASE
                 if word not in lesson_list:
                     #print(word)
-                    conn.execute('INSERT INTO vocabulary (lesson, word) VALUES (?, ?)',
-                    (lesson_get, word))
+                    query = """INSERT INTO vocabulary (lesson, word) VALUES (%s, %s)"""
+                    tuple1 = (lesson_get, word)
+                    conn.execute(query, tuple1)
                     conn.commit()
                 elif word in lesson_list:
                     lesson_list.remove(word)
             #DELETE WORDS IN DATABASE LEFT IN LESSON LIST
             for leftOver in lesson_list:
                 print(leftOver)
-                conn.execute('DELETE FROM vocabulary WHERE word = ?', (leftOver,))
+                conn.execute('DELETE FROM vocabulary WHERE word = %s', (leftOver,))
                 conn.commit()
             conn.close()
             flash("Chapter "+str(lesson_get)+" has been updated")
@@ -190,7 +191,7 @@ def delete(auth):
         return redirect(url_for('edit', auth=auth))
     else:
         conn = get_db_connection()
-        conn.execute('DELETE FROM vocabulary WHERE lesson = ?', (delete_get))
+        conn.execute('DELETE FROM vocabulary WHERE lesson = %s', (delete_get))
         conn.commit()
         conn.close()
         flash("Chapter "+str(delete_get)+" deleted.")
@@ -232,7 +233,9 @@ def add2(auth):
             words = text.split('\r')
             for word in words:
                 word = word.strip('\n')
-                conn.execute('INSERT INTO vocabulary (lesson, word) VALUES (?, ?)', (lesson, word))
+                query = """INSERT INTO vocabulary (lesson, word) VALUES (%s, %s)"""
+                tuple1 = (lesson, word)
+                conn.execute(query, tuple1)
                 conn.commit()
             conn.close()
             flash("Chapter "+str(lesson)+" created successfully")
