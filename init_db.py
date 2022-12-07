@@ -18,7 +18,7 @@ def check():
     exists = cur.fetchone()
     if exists[0] == False:
         with open('schema.sql') as f:
-            conn.execute(f.read())
+            cur.execute(f.read())
 
     #cur = conn.cursor()
 
