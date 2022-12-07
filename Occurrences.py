@@ -29,13 +29,13 @@ def compileWords(database, num):
     wordBank = {"Readability":0, "Proper Nouns": []}
     cur.execute("SELECT word, lesson FROM vocabulary WHERE lesson BETWEEN 1 and "+ num)
     vocabList = cur.fetchall()
-    conn.commit()
+    cur.commit()
     for row in vocabList:
         #unpack table name, which is a tuple, into a string
         str_word = row[0]
         str_lesson = row[1]
         wordBank[str_word] = [str_lesson]
-        conn.commit()         
+        cur.commit()         
     cur.close()
     return wordBank
 

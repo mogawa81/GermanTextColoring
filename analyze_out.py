@@ -1,5 +1,5 @@
 #import os
-from bs4 import BeautifulSoup
+#from bs4 import BeautifulSoup
 from pathlib import Path
 
 #FOR TESTING
