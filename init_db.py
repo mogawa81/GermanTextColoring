@@ -13,8 +13,8 @@ cur = conn.cursor()
                              #database='database',
                              #user='root')
 #cur = conn.cursor(prepared=True)
-exists = cur.execute('SELECT 1 FROM vocabulary WHERE lesson=1 AND word="ich"').fetchone()
-if exists[0] == 0:
+exists = cur.execute("select exists(select * from information_schema.tables where table_name=%s)", ('vocabulary',)).fetchone()
+if exists[0] == False:
     with open('schema.sql') as f:
         conn.executescript(f.read())
 
