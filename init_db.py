@@ -1,5 +1,5 @@
 import sqlite3 as db
-import mysql.connector
+#import mysql.connector
 import psycopg2
 import os
 
