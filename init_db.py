@@ -25,7 +25,7 @@ def check():
     #cur = conn.cursor()
     cur.execute("DROP TABLE IF EXISTS dbMasters")
     conn.commit()
-    cur.execute("CREATE TABLE dbMasters CREATE TABLE dbMasters (email TEXT NOT NULL, pass TEXT NOT NULL)")
+    cur.execute("CREATE TABLE dbMasters (email TEXT NOT NULL, pass TEXT NOT NULL)")
     conn.commit()
     cur.execute("INSERT INTO dbMasters (email, pass) VALUES (%s, %s)", ("mogawa@princeton.edu", "cloudyWalls"))
     cur.execute("INSERT INTO dbMasters (email, pass) VALUES (%s, %s)", ("jrankin@princeton.edu", "N!F7uH$1bEyO"))
