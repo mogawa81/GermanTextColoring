@@ -184,7 +184,7 @@ def update2(lesson_get, auth):
             flash('At least 1 word is required! To delete a chapter, go back to the \"Edit\" page')
             lesson_str = ''
             for word in get_lesson(lesson_get):
-                lesson_str += word['word'] + "\n"
+                lesson_str += str(word[0]) + "\n"
             conn.close()
             return render_template("update.html", lesson_str=lesson_str, lesson_get=lesson_get, auth=auth)
         else:
