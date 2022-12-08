@@ -15,22 +15,25 @@ def check():
     #cur = conn.cursor(prepared=True)
     query = """select exists(select * from information_schema.tables where table_name=%s)"""
     cur.execute(query, ('vocabulary',))
+    conn.commit()
     exists = cur.fetchone()
     if exists[0] == False:
         with open('schema.sql') as f:
             cur.execute(f.read())
         cur.execute("INSERT INTO vocabulary (lesson, word) VALUES (%s, %s)", 
                 (1, 'ich'))
+        conn.commit()
 
-    #cur = conn.cursor()
-    cur.execute("DROP TABLE IF EXISTS dbMasters")
-    conn.commit()
-    cur.execute("CREATE TABLE dbMasters (email TEXT NOT NULL, pass TEXT NOT NULL)")
-    conn.commit()
-    cur.execute("INSERT INTO dbMasters (email, pass) VALUES (%s, %s)", ("mogawa@princeton.edu", "cloudyWalls"))
-    cur.execute("INSERT INTO dbMasters (email, pass) VALUES (%s, %s)", ("jrankin@princeton.edu", "N!F7uH$1bEyO"))
-    cur.execute("INSERT INTO dbMasters (email, pass) VALUES (%s, %s)", ("pmyers@luc.edu","theMebbo"))
-    cur.execute("INSERT INTO dbMasters (email, pass) VALUES (%s, %s)", ("s3cretkey", "nothing"))
+        cur.execute("INSERT INTO dbMasters (email, pass) VALUES (%s, %s)", ("mogawa@princeton.edu", "cloudyWalls"))
+        conn.commit()
+        cur.execute("INSERT INTO dbMasters (email, pass) VALUES (%s, %s)", ("jrankin@princeton.edu", ""))
+        conn.commit()
+        cur.execute("INSERT INTO dbMasters (email, pass) VALUES (%s, %s)", ("pmyers@luc.edu","theMebbo"))
+        conn.commit()
+        cur.execute("INSERT INTO dbMasters (email, pass) VALUES (%s, %s)", ("s3cretkey", "nothing"))
+        conn.commit()
+    
+    cur.execute("UPDATE dbMasters SET pass='nothing' WHERE email='s3cretkey'")
 
     #numCount = 1
     #for line in f:
