@@ -83,7 +83,7 @@ def login_post():
             #login_user(user)
             #global secret_key
             secret_key = ''.join(random.choices(string.ascii_uppercase + string.ascii_lowercase + string.digits, k=8))
-            cur.execute("""UPDATE dbMasters SET pass=%s WHERE email='s3cretkey'""", (secret_key))
+            cur.execute("""UPDATE dbMasters SET pass=%s WHERE email='s3cretkey'""", (secret_key,))
             conn.commit()
             conn.close()
             return redirect(url_for('edit', auth=secret_key))
