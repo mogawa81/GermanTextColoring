@@ -127,7 +127,7 @@ def edit(auth):
     l = get_db_connection()
     conn = l[0]
     cur = l[1]
-    cur.execute("""SELECT pass FROM dbMasters WHERE EXISTS email='s3cretkey'""")
+    cur.execute("""SELECT pass FROM dbMasters WHERE EXISTS (SELECT 1 FROM dbMasters WHERE email='s3cretkey')""")
     secret_key = cur.fetchone()
     if not auth == secret_key[0]:
         #print(auth)
