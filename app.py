@@ -194,7 +194,7 @@ def update2(lesson_get, auth):
             words = text.split('\r')
             lesson_list = []
             for item in get_lesson(lesson_get):
-                lesson_list.append(item['word'])
+                lesson_list.append(str(item[0]))
             for word in words:
                 word = word.strip('\n')
                 #ADD WORDS TO DATABASE
