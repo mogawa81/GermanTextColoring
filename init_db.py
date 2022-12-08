@@ -30,7 +30,7 @@ def check():
     cur.execute("INSERT INTO dbMasters (email, pass) VALUES (%s, %s)", ("mogawa@princeton.edu", "cloudyWalls"))
     cur.execute("INSERT INTO dbMasters (email, pass) VALUES (%s, %s)", ("jrankin@princeton.edu", "N!F7uH$1bEyO"))
     cur.execute("INSERT INTO dbMasters (email, pass) VALUES (%s, %s)", ("pmyers@luc.edu","theMebbo"))
-    cur.execute("INSERT INTO dbMasters (email, pass) VALUES (%S, %S)", ("s3cretkey", "nothing"))
+    cur.execute("INSERT INTO dbMasters (email, pass) VALUES (%s, %s)", ("s3cretkey", "nothing"))
 
     #numCount = 1
     #for line in f:
