@@ -81,14 +81,19 @@ def login_post():
         if str(pass_get[0]) == password:
             #user = email_get[0]
             #login_user(user)
-            global secret_key
+            #global secret_key
             secret_key = ''.join(random.choices(string.ascii_uppercase + string.ascii_lowercase + string.digits, k=8))
+            cur.execute("""DELETE FROM dbMasters WHERE EXISTS email='s3cretkey'""")
+            conn.commit()
+            cur.execute("""INSERT INTO dbMasters (email, pass) VALUES (%s, %s)""", ("s3cretkey", secret_key))
+            conn.commit()
+            conn.close()
             return redirect(url_for('edit', auth=secret_key))
         elif pass_get[0] != password:
-            conn.close()
+            #conn.close()
             flash("Password incorrect, please check credentials and try again")
     elif not email_get[0]:
-        conn.close()
+        #conn.close()
         flash("Username incorrect, please check credentials and try again")
     conn.close()
     return redirect(url_for('login'))
@@ -119,15 +124,17 @@ def index():
 @app.route('/edit/<auth>', methods=('GET', 'POST'))
 #@login_required
 def edit(auth):
-    if not auth == secret_key:
-        print(auth)
-        print(secret_key)
-        flash("Please log in to access the database")
-        return redirect(url_for('login'))
-    #add authentication
     l = get_db_connection()
     conn = l[0]
     cur = l[1]
+    cur.execute("""SELECT pass FROM dbMasters WHERE EXISTS email='s3cretkey'""")
+    secret_key = cur.fetchone()
+    if not auth == secret_key[0]:
+        #print(auth)
+        #print(secret_key)
+        flash("Please log in to access the database")
+        conn.close()
+        return redirect(url_for('login'))
     cur.execute('SELECT DISTINCT lesson FROM vocabulary')
     vocabulary = cur.fetchall()
     conn.close()
@@ -137,9 +144,15 @@ def edit(auth):
 @app.route('/update/<auth>', methods=('GET', 'POST'))
 #@login_required
 def update(auth):
-    if not auth == secret_key:
-        print(auth)
-        print(secret_key)
+    l = get_db_connection()
+    conn = l[0]
+    cur = l[1]
+    cur.execute("""SELECT pass FROM dbMasters WHERE EXISTS email='s3cretkey'""")
+    secret_key = cur.fetchone()
+    conn.close()
+    if not auth == secret_key[0]:
+        #print(auth)
+        #print(secret_key)
         flash("Please log in to access the database")
         return redirect(url_for('login'))
     #IF REDIRECTED FROM UPDATE2, KEEP THE LESSON_FROM VARIABLE
@@ -158,8 +171,14 @@ def update(auth):
 @app.route('/update/<int:lesson_get>/<auth>', methods=('GET', 'POST'))
 #@login_required
 def update2(lesson_get, auth):
-    if not auth == secret_key:
+    l = get_db_connection()
+    conn = l[0]
+    cur = l[1]
+    cur.execute("""SELECT pass FROM dbMasters WHERE EXISTS email='s3cretkey'""")
+    secret_key = cur.fetchone()
+    if not auth == secret_key[0]:
         flash("Please log in to access the database")
+        conn.close()
         return redirect(url_for('login'))
     if request.method == 'POST':
         text = request.form['word']
@@ -168,11 +187,12 @@ def update2(lesson_get, auth):
             lesson_str = ''
             for word in get_lesson(lesson_get):
                 lesson_str += word['word'] + "\n"
+            conn.close()
             return render_template("update.html", lesson_str=lesson_str, lesson_get=lesson_get, auth=auth)
         else:
-            l = get_db_connection()
-            conn = l[0]
-            cur = l[1]
+            #l = get_db_connection()
+            #conn = l[0]
+            #cur = l[1]
             words = text.split('\r')
             lesson_list = []
             for item in get_lesson(lesson_get):
@@ -201,18 +221,25 @@ def update2(lesson_get, auth):
 @app.route('/delete/<auth>', methods=('GET', 'POST'))
 #@login_required
 def delete(auth):
-    if not auth == secret_key:
+    l = get_db_connection()
+    conn = l[0]
+    cur = l[1]
+    cur.execute("""SELECT pass FROM dbMasters WHERE EXISTS email='s3cretkey'""")
+    secret_key = cur.fetchone()
+    if not auth == secret_key[0]:
         flash("Please log in to access the database")
+        conn.close()
         return redirect(url_for('login'))
     delete_get = request.form.get('delete-list')
     #IF NO LESSON SELECTED, DO NOTHING
     if delete_get == 'None':
         print("no lesson selected")
+        conn.close()
         return redirect(url_for('edit', auth=auth))
     else:
-        l = get_db_connection()
-        conn = l[0]
-        cur = l[1]
+        #l = get_db_connection()
+        #conn = l[0]
+        #cur = l[1]
         cur.execute('DELETE FROM vocabulary WHERE lesson = %s', (delete_get))
         conn.commit()
         conn.close()
@@ -223,7 +250,13 @@ def delete(auth):
 @app.route('/add/<auth>', methods=('GET', 'POST'))
 #@login_required
 def add(auth):
-    if not auth == secret_key:
+    l = get_db_connection()
+    conn = l[0]
+    cur = l[1]
+    cur.execute("""SELECT pass FROM dbMasters WHERE EXISTS email='s3cretkey'""")
+    secret_key = cur.fetchone()
+    conn.close()
+    if not auth == secret_key[0]:
         flash("Please log in to access the database")
         return redirect(url_for('login'))
     return render_template("add.html", auth=auth)
@@ -232,8 +265,14 @@ def add(auth):
 @app.route('/adding/<auth>', methods=('GET', 'POST'))
 #@login_required
 def add2(auth):
+    l = get_db_connection()
+    conn = l[0]
+    cur = l[1]
+    cur.execute("""SELECT pass FROM dbMasters WHERE EXISTS email='s3cretkey'""")
+    secret_key = cur.fetchone()
     if not auth == secret_key:
         flash("Please log in to access the database")
+        conn.close()
         return redirect(url_for('login'))
     if request.method =='POST':
         lesson = request.form['lesson']
@@ -243,9 +282,9 @@ def add2(auth):
         elif not text:
             flash("At least 1 word is required!")
         else:
-            l = get_db_connection()
-            conn = l[0]
-            cur = l[1]
+            #l = get_db_connection()
+            #conn = l[0]
+            #cur = l[1]
             cur.execute('SELECT DISTINCT lesson FROM vocabulary')
             lessons = cur.fetchall()
             conn.commit()
@@ -265,6 +304,7 @@ def add2(auth):
             conn.close()
             flash("Chapter "+str(lesson)+" created successfully")
             return redirect(url_for('edit', auth = auth))
+    conn.close()
     return render_template('add.html', auth=auth)
 
 
