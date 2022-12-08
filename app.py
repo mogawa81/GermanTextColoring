@@ -164,7 +164,7 @@ def update(auth):
     #if request.method =='POST':
     lesson_str = ''
     for word in get_lesson(lesson_get):
-        lesson_str += word['word'] + "\n"
+        lesson_str += str(word['word']) + "\n"
     return render_template("update.html", lesson_str=lesson_str, lesson_get=lesson_get, auth=auth)
 
 #UPDATE CHAPTER LIST STEP 2
