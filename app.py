@@ -46,7 +46,7 @@ def get_lesson(lesson):
     l = get_db_connection()
     conn = l[0]
     cur = l[1]
-    query = """SELECT * FROM vocabulary WHERE lesson = %s"""
+    query = """SELECT word FROM vocabulary WHERE lesson = %s"""
     cur.execute(query, (lesson,))
     lesson_got = cur.fetchall()
     conn.close()
@@ -162,7 +162,7 @@ def update(auth):
     #if request.method =='POST':
     lesson_str = ''
     for word in get_lesson(lesson_get):
-        lesson_str += str(word[1]) + "\n"
+        lesson_str += str(word[0]) + "\n"
     return render_template("update.html", lesson_str=lesson_str, lesson_get=lesson_get, auth=auth)
 
 #UPDATE CHAPTER LIST STEP 2
