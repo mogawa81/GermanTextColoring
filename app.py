@@ -268,7 +268,7 @@ def add2(auth):
     cur = l[1]
     cur.execute("""SELECT pass FROM dbMasters WHERE email='s3cretkey'""")
     secret_key = cur.fetchone()
-    if not auth == secret_key:
+    if not auth == secret_key[0]:
         flash("Please log in to access the database")
         conn.close()
         return redirect(url_for('login'))
