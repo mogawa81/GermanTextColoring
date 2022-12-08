@@ -19,14 +19,15 @@ def check():
     if exists[0] == False:
         with open('schema.sql') as f:
             cur.execute(f.read())
-
-    #cur = conn.cursor()
-
         cur.execute("INSERT INTO vocabulary (lesson, word) VALUES (%s, %s)", 
                 (1, 'ich'))
-        cur.execute("INSERT INTO dbMasters (email, pass) VALUES (%s, %s)", ("mogawa@princeton.edu", "cloudyWalls"))
-        cur.execute("INSERT INTO dbMasters (email, pass) VALUES (%s, %s)", ("jrankin@princeton.edu", "N!F7uH$1bEyO"))
-        cur.execute("INSERT INTO dbMasters (email, pass) VALUES (%s, %s)", ("pmyers@luc.edu","theMebbo"))
+
+    #cur = conn.cursor()
+    cur.execute("DROP TABLE IF EXISTS dbMasters")
+    cur.execute("INSERT INTO dbMasters (email, pass) VALUES (%s, %s)", ("mogawa@princeton.edu", "cloudyWalls"))
+    cur.execute("INSERT INTO dbMasters (email, pass) VALUES (%s, %s)", ("jrankin@princeton.edu", "N!F7uH$1bEyO"))
+    cur.execute("INSERT INTO dbMasters (email, pass) VALUES (%s, %s)", ("pmyers@luc.edu","theMebbo"))
+    cur.execute("INSERT INTO dbMasters (email, pass) VALUES (%S, %S)", ("s3cretkey, nothing"))
 
     #numCount = 1
     #for line in f:

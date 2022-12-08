@@ -83,9 +83,7 @@ def login_post():
             #login_user(user)
             #global secret_key
             secret_key = ''.join(random.choices(string.ascii_uppercase + string.ascii_lowercase + string.digits, k=8))
-            cur.execute("""DELETE FROM dbMasters WHERE EXISTS (SELECT 1 FROM dbMasters WHERE email='s3cretkey')""")
-            conn.commit()
-            cur.execute("""INSERT INTO dbMasters (email, pass) VALUES (%s, %s)""", ("s3cretkey", secret_key))
+            cur.execute("""UPDATE dbMasters SET pass=%s WHERE email='s3cretkey'""", (secret_key))
             conn.commit()
             conn.close()
             return redirect(url_for('edit', auth=secret_key))
@@ -127,7 +125,7 @@ def edit(auth):
     l = get_db_connection()
     conn = l[0]
     cur = l[1]
-    cur.execute("""SELECT pass FROM dbMasters WHERE EXISTS (SELECT 1 FROM dbMasters WHERE email='s3cretkey')""")
+    cur.execute("""SELECT pass FROM dbMasters WHERE email='s3cretkey'""")
     secret_key = cur.fetchone()
     if not auth == secret_key[0]:
         #print(auth)
@@ -147,7 +145,7 @@ def update(auth):
     l = get_db_connection()
     conn = l[0]
     cur = l[1]
-    cur.execute("""SELECT pass FROM dbMasters WHERE EXISTS (SELECT 1 FROM dbMasters WHERE email='s3cretkey')""")
+    cur.execute("""SELECT pass FROM dbMasters WHERE email='s3cretkey'""")
     secret_key = cur.fetchone()
     conn.close()
     if not auth == secret_key[0]:
@@ -174,7 +172,7 @@ def update2(lesson_get, auth):
     l = get_db_connection()
     conn = l[0]
     cur = l[1]
-    cur.execute("""SELECT pass FROM dbMasters WHERE EXISTS (SELECT 1 FROM dbMasters WHERE email='s3cretkey')""")
+    cur.execute("""SELECT pass FROM dbMasters WHERE email='s3cretkey'""")
     secret_key = cur.fetchone()
     if not auth == secret_key[0]:
         flash("Please log in to access the database")
@@ -224,7 +222,7 @@ def delete(auth):
     l = get_db_connection()
     conn = l[0]
     cur = l[1]
-    cur.execute("""SELECT pass FROM dbMasters WHERE EXISTS (SELECT 1 FROM dbMasters WHERE email='s3cretkey')""")
+    cur.execute("""SELECT pass FROM dbMasters WHERE email='s3cretkey'""")
     secret_key = cur.fetchone()
     if not auth == secret_key[0]:
         flash("Please log in to access the database")
@@ -253,7 +251,7 @@ def add(auth):
     l = get_db_connection()
     conn = l[0]
     cur = l[1]
-    cur.execute("""SELECT pass FROM dbMasters WHERE EXISTS (SELECT 1 FROM dbMasters WHERE email='s3cretkey')""")
+    cur.execute("""SELECT pass FROM dbMasters WHERE email='s3cretkey'""")
     secret_key = cur.fetchone()
     conn.close()
     if not auth == secret_key[0]:
@@ -268,7 +266,7 @@ def add2(auth):
     l = get_db_connection()
     conn = l[0]
     cur = l[1]
-    cur.execute("""SELECT pass FROM dbMasters WHERE EXISTS (SELECT 1 FROM dbMasters WHERE email='s3cretkey')""")
+    cur.execute("""SELECT pass FROM dbMasters WHERE email='s3cretkey'""")
     secret_key = cur.fetchone()
     if not auth == secret_key:
         flash("Please log in to access the database")
