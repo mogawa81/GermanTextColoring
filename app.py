@@ -338,10 +338,10 @@ def analyze():
             wordBank = compileWords("database.db", chapters)
             print("calculating readability...")
             foundWords = readability(wordBank, text)
-            print("writing to template...")
-            write_to_template(foundWords, text)
-            print("returning template...")
-            return render_template('analyze_out.html')
+            #print("writing to template...")
+            #write_to_template(foundWords, text)
+            print("rendering template...")
+            return render_template('analyze_out.html', readability=foundWords["Readability"], properNouns=foundWords["Proper Nouns"], text=foundWords["Text"])
             #return "Readability: "+str(foundWords["Readability"])+"%"
             
     return render_template('analyze.html')
