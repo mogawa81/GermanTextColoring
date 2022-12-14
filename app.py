@@ -1,5 +1,5 @@
 from Occurrences import compileWords, lemmatize, extractProperNouns, readability
-from analyze_out import write_to_template
+#from analyze_out import write_to_template
 #import sqlite3
 from flask import Flask, render_template, request, url_for, flash, redirect, abort, Blueprint
 import string
