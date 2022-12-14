@@ -105,7 +105,7 @@ def readability(wordBank, text):
     #extract proper nouns
     nouns = extractProperNouns(text)
     #add number of proper nouns to readability score
-    numerator += len(nouns)
+    #numerator += len(nouns)
     score = numerator/denominator * 100
     out2["Readability"] = score
     out2["Proper Nouns"] = nouns
