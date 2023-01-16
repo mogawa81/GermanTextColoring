@@ -102,7 +102,6 @@ def readability(wordBank, text):
     outDict["Readability"] = score
     outDict["Proper Nouns"] = nouns
     outDict["Text"] = formatted_text
-    print(formatted_text)
     return outDict
 
 # FOR TESTING
