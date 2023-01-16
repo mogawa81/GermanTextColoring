@@ -89,11 +89,9 @@ def readability(wordBank, text):
                 else:
                     # replace the non-vocab word in the text with html formatted color code
                     word = words[wordsCount]
-                    # if word is a number, then count it as part of being readable
+                    # if a word is a number, don't color
                     if not word.isnumeric():
                         line = re.sub(r'\b'+word+r'\b', formatted(word), line)
-                    else:
-                        numerator += 1
             elif lemma in foundLemmas:
                 numerator += 1
                 word = words[wordsCount]
