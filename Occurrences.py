@@ -2,19 +2,11 @@ import spacy
 import nltk
 nltk.download('punkt')
 import string
-#from nltk.corpus import stopwords
-from nltk import tokenize
 from HanTa import HanoverTagger as ht
 #import sqlite3 as db
 import re
 import psycopg2
 import os
-
-try:
-    nlp = spacy.load('de_core_news_md')
-except: #if not present, download
-    spacy.cli.download('de_core_news_md')
-    nlp = spacy.load('de_core_news_md')
 
 def compileWords(database, num):
     #conn = db.connect(database)
@@ -28,7 +20,7 @@ def compileWords(database, num):
     size = cur.fetchone()
     if num == -1:
         num = str(size[0])
-    wordBank = {"Readability":0, "Proper Nouns": []}
+    wordBank = {}
     cur.execute("SELECT word FROM vocabulary WHERE lesson BETWEEN 1 and "+ num)
     vocabList = cur.fetchall()
     conn.commit()
@@ -42,10 +34,10 @@ def compileWords(database, num):
 
 def lemmatize(line):
     mails_lemma = []
+    tagger = ht.HanoverTagger("morphmodel_ger.pgz")
     for mail in line.split():
-        doc = nlp(mail)
-        result = ' '.join([x.lemma_ for x in doc])
-        mails_lemma.append(result)
+        lemma = [lemma for (word,lemma,pos) in tagger.tag_sent(mail.split())]
+        mails_lemma.append(' '.join(lemma))
     return mails_lemma
         
 def extractProperNouns(text):
@@ -68,16 +60,11 @@ def readability(wordBank, text):
     numerator = 0
     denominator = 0
     f = text.splitlines()
-    colors_file = open("colors.txt", 'r')
-    colors = []
-    for color in colors_file:
-        colors.append(color.split()[0])
     formatted_text = ''''''
     for line in f:
         line_unpunctuated = line.translate(str.maketrans('','',string.punctuation))
         #lemmatize and see if they are in the vocab list
         lemmas = lemmatize(line_unpunctuated)
-        #lemmas = lemmas.split()
         words = line_unpunctuated.split()
         wordsCount = 0
         for lemma in lemmas:
@@ -89,6 +76,7 @@ def readability(wordBank, text):
                     # DELETED: add the lesson number as the first element of the lemma in new dict
                     #lesson = wordBank[lemma][0]
                     #foundLemmas[lemma] = [lesson]
+                    
                     # find the corresponding word in the text
                     word = words[wordsCount]
                     # add the word to the new dict under the lemma list
@@ -126,11 +114,11 @@ def output(foundWords):
 #FOR TESTING
 def test():
     print("in Occurences.py!")
-    wordBank = compileWords("database.db", "1")
+    wordBank = {"arbeiten", "finden", "fragen", "gehen"}
     print("compiled words!")
-    f = open("sample1.txt", 'r')
+    f = open("sample3.txt", 'r')
     f = f.read()
     foundWords = readability(wordBank, f)
-    output(foundWords)
+    print(foundWords["Text"])
 
 #test()
