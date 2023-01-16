@@ -27,6 +27,7 @@ def compileWords(database, num):
     for row in vocabList:
         #unpack table name, which is a tuple, into a string
         str_word = row[0]
+        str_word = str_word.lower()
         wordBank[str_word] = None
         conn.commit()         
     conn.close()
@@ -69,6 +70,7 @@ def readability(wordBank, text):
         words = line_unpunctuated.split()
         wordsCount = 0
         for lemma in lemmas:
+            lemma = lemma.lower()
             denominator += 1
             # if lemma has not been previously seen and stored in foundLemmas
             if lemma not in foundLemmas:
