@@ -65,6 +65,7 @@ def readability(wordBank, text):
         line_unpunctuated = line.translate(str.maketrans('','',string.punctuation))
         #lemmatize and see if they are in the vocab list
         lemmas = lemmatize(line_unpunctuated)
+        print(lemmas)
         words = line_unpunctuated.split()
         wordsCount = 0
         for lemma in lemmas:
