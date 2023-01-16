@@ -73,10 +73,11 @@ def readability(wordBank, text):
             if lemma not in foundLemmas:
                 # if lemma is in the word bank, check if conjugation is in the list for that lemma
                 if lemma in wordBank:
+                    numerator += 1
                     # DELETED: add the lesson number as the first element of the lemma in new dict
                     #lesson = wordBank[lemma][0]
                     #foundLemmas[lemma] = [lesson]
-                    
+                    #------------------------------------------------------------------------------
                     # find the corresponding word in the text
                     word = words[wordsCount]
                     # add the word to the new dict under the lemma list
@@ -86,7 +87,6 @@ def readability(wordBank, text):
                     # replace the non-vocab word in the text with html formatted color code
                     word = words[wordsCount]
                     line = re.sub(r'\b'+word+r'\b', formatted(word), line)
-                    numerator += 1
             elif lemma in foundLemmas:
                 numerator += 1
                 word = words[wordsCount]
@@ -99,6 +99,8 @@ def readability(wordBank, text):
     #extract proper nouns
     nouns = extractProperNouns(text)
     score = numerator/denominator * 100
+    print(numerator)
+    print(denominator)
     outDict["Readability"] = score
     outDict["Proper Nouns"] = nouns
     outDict["Text"] = formatted_text
