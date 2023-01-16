@@ -98,12 +98,11 @@ def readability(wordBank, text):
         formatted_text += " " + line
     #extract proper nouns
     nouns = extractProperNouns(text)
-    #add number of proper nouns to readability score
-    #numerator += len(nouns)
     score = numerator/denominator * 100
     outDict["Readability"] = score
     outDict["Proper Nouns"] = nouns
     outDict["Text"] = formatted_text
+    print(formatted_text)
     return outDict
 
 # FOR TESTING
