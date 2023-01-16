@@ -92,7 +92,7 @@ def readability(wordBank, text):
                     # find the corresponding word in the text
                     word = words[wordsCount]
                     # add the word to the new dict under the lemma list
-                    foundLemmas[lemma].append(word)
+                    foundLemmas[lemma] = word
                 # if word is not a vocab word in the wordbank, color RED
                 else:
                     # replace the non-vocab word in the text with html formatted color code
