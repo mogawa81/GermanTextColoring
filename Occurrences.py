@@ -35,7 +35,7 @@ def compileWords(database, num):
     for row in vocabList:
         #unpack table name, which is a tuple, into a string
         str_word = row[0]
-        wordBank[str_word]
+        wordBank[str_word] = None
         conn.commit()         
     conn.close()
     return wordBank
