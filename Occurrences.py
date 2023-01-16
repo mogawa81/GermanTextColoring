@@ -101,7 +101,8 @@ def readability(wordBank, text):
     score = numerator/denominator * 100
     outDict["Readability"] = score
     outDict["Proper Nouns"] = nouns
-    outDict["Text"] = formatted_text
+    #outDict["Text"] = formatted_text
+    outDict["Text"] = "<FONT COLOR=#FF5733>Abenden</FONT>"
     return outDict
 
 # FOR TESTING
