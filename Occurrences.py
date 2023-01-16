@@ -29,14 +29,13 @@ def compileWords(database, num):
     if num == -1:
         num = str(size[0])
     wordBank = {"Readability":0, "Proper Nouns": []}
-    cur.execute("SELECT word, lesson FROM vocabulary WHERE lesson BETWEEN 1 and "+ num)
+    cur.execute("SELECT word FROM vocabulary WHERE lesson BETWEEN 1 and "+ num)
     vocabList = cur.fetchall()
     conn.commit()
     for row in vocabList:
         #unpack table name, which is a tuple, into a string
         str_word = row[0]
-        str_lesson = row[1]
-        wordBank[str_word] = [str_lesson]
+        wordBank[str_word]
         conn.commit()         
     conn.close()
     return wordBank
@@ -55,15 +54,17 @@ def extractProperNouns(text):
     tokens=[word for (word,x,pos) in tagger.tag_sent(words,taglevel= 1) if pos == 'NE']
     return tokens
 
-def formatted(word, lesson, colors):
-    code = str(colors[lesson - 1]) # lesson 1 is color in element 0
+def formatted(word):
+    code = "#FF5733" #Bright red
     out = '''<FONT COLOR=''' + code + '''>''' + word + '''</FONT>'''
     return out
     
 
 def readability(wordBank, text):
-    out = {}
-    out2 = {"Readability":0, "Proper Nouns":[], "Text": ""} 
+    # dict for lemmas found in the text
+    foundLemmas = {}
+    #dict returning readability, proper nouns, html formatted text
+    outDict = {"Readability":0, "Proper Nouns":[], "Text": ""} 
     numerator = 0
     denominator = 0
     f = text.splitlines()
@@ -81,25 +82,29 @@ def readability(wordBank, text):
         wordsCount = 0
         for lemma in lemmas:
             denominator += 1
-            # if lemma is in the word bank, check if it is in the list for that lemma
-            if lemma not in out:
+            # if lemma has not been previously seen and stored in foundLemmas
+            if lemma not in foundLemmas:
+                # if lemma is in the word bank, check if conjugation is in the list for that lemma
                 if lemma in wordBank:
-                    # add the lesson number as the first element of the lemma in new dict
-                    lesson = wordBank[lemma][0]
-                    out[lemma] = [lesson]
+                    # DELETED: add the lesson number as the first element of the lemma in new dict
+                    #lesson = wordBank[lemma][0]
+                    #foundLemmas[lemma] = [lesson]
                     # find the corresponding word in the text
                     word = words[wordsCount]
                     # add the word to the new dict under the lemma list
-                    out[lemma].append(word)
-                    # replace the vocab word in the text with html formatted color code
-                    line = re.sub(r'\b'+word+r'\b', formatted(word, lesson, colors), line)
+                    foundLemmas[lemma].append(word)
+                # if word is not a vocab word in the wordbank, color RED
+                else:
+                    # replace the non-vocab word in the text with html formatted color code
+                    line = re.sub(r'\b'+word+r'\b', formatted(word), line)
                     numerator += 1
-            elif lemma in out:
+            elif lemma in foundLemmas:
                 numerator += 1
                 word = words[wordsCount]
-                if word not in out[lemma]:
-                    out[lemma].append(word)
-                line = re.sub(r'\b'+word+r'\b', formatted(word, lesson, colors), line)
+                if word not in foundLemmas[lemma]:
+                    foundLemmas[lemma].append(word)
+                #DELETE:
+                #line = re.sub(r'\b'+word+r'\b', formatted(word, lesson, colors), line)
             wordsCount += 1
         formatted_text += " " + line
     #extract proper nouns
@@ -107,25 +112,15 @@ def readability(wordBank, text):
     #add number of proper nouns to readability score
     #numerator += len(nouns)
     score = numerator/denominator * 100
-    out2["Readability"] = score
-    out2["Proper Nouns"] = nouns
-    out2["Text"] = formatted_text
-    return out2
+    outDict["Readability"] = score
+    outDict["Proper Nouns"] = nouns
+    outDict["Text"] = formatted_text
+    return outDict
 
 # FOR TESTING
 def output(foundWords):
-    out = ""
-    for lemma in foundWords:
-        if lemma == "Readability":
-            print("READABILITY:", foundWords[lemma], "%")
-        elif lemma == "Proper Nouns":
-            print("Proper Nouns:", foundWords[lemma])
-        elif foundWords[lemma] != []:
-            out += lemma + ": "
-            for word in foundWords[lemma]:
-                out += str(word) + ", "
-            out += "\n"
-    return out
+    print(foundWords["Proper Nouns"])
+    print(foundWords["Text"])
 
 #FOR TESTING
 def test():
@@ -135,6 +130,6 @@ def test():
     f = open("sample1.txt", 'r')
     f = f.read()
     foundWords = readability(wordBank, f)
-    print(output(foundWords))
+    output(foundWords)
 
 #test()
