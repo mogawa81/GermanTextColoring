@@ -161,8 +161,12 @@ def update(auth):
         return redirect(url_for('edit', auth=auth))
     #if request.method =='POST':
     lesson_str = ''
+    #array to alphabetize words
+    words = []
     for word in get_lesson(lesson_get):
-        lesson_str += str(word[0]) + "\n"
+        words.append(word[0])
+    for word in words.sort():
+        lesson_str += str(word) + "\n"
     return render_template("update.html", lesson_str=lesson_str, lesson_get=lesson_get, auth=auth)
 
 #UPDATE CHAPTER LIST STEP 2
