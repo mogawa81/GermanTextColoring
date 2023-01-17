@@ -1,5 +1,7 @@
 import nltk
 nltk.download('punkt')
+from nltk.stem import PorterStemmer
+from nltk.tokenize import word_tokenize
 import string
 from HanTa import HanoverTagger as ht
 #import sqlite3 as db
@@ -33,10 +35,17 @@ def compileWords(database, num):
     return wordBank
 
 def lemmatize(line):
+    #mails_lemma = []
+    #tagger = ht.HanoverTagger("morphmodel_ger.pgz")
+    #for mail in line.split():
+        #lemma = [lemma for (word,lemma,pos) in tagger.tag_sent(mail.split())]
+        #mails_lemma.append(' '.join(lemma))
+    #return mails_lemma
+    
+    ps = PorterStemmer()
     mails_lemma = []
-    tagger = ht.HanoverTagger("morphmodel_ger.pgz")
     for mail in line.split():
-        lemma = [lemma for (word,lemma,pos) in tagger.tag_sent(mail.split())]
+        lemma = ps.stem(mail)
         mails_lemma.append(' '.join(lemma))
     return mails_lemma
         
