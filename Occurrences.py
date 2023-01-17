@@ -46,7 +46,7 @@ def lemmatize(line):
     mails_lemma = []
     for mail in line.split():
         lemma = ps.stem(mail)
-        mails_lemma.append(' '.join(lemma))
+        mails_lemma.append(lemma)
     return mails_lemma
         
 def extractProperNouns(text):
