@@ -1,6 +1,5 @@
-import spacy
-import nltk
-nltk.download('punkt')
+#import nltk
+#nltk.download('punkt')
 import string
 from HanTa import HanoverTagger as ht
 #import sqlite3 as db
