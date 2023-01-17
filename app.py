@@ -136,7 +136,11 @@ def edit(auth):
     cur.execute('SELECT DISTINCT lesson FROM vocabulary')
     vocabulary = cur.fetchall()
     conn.close()
-    return render_template('edit.html', vocabulary=vocabulary, auth=auth)
+    vocab_sorted = []
+    for lesson in vocabulary:
+        vocab_sorted.append(lesson[0])
+    vocab_sorted.sort()
+    return render_template('edit.html', vocabulary=vocab_sorted, auth=auth)
 
 #UPDATE A CHAPTER LIST
 @app.route('/update/<auth>', methods=('GET', 'POST'))
@@ -166,6 +170,7 @@ def update(auth):
     for word in get_lesson(lesson_get):
         words.append(str(word[0]))
     words.sort()
+    print(words)
     for word in words:
         lesson_str += word + "\n"
     return render_template("update.html", lesson_str=lesson_str, lesson_get=lesson_get, auth=auth)
