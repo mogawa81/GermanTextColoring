@@ -165,7 +165,8 @@ def update(auth):
     words = []
     for word in get_lesson(lesson_get):
         words.append(str(word[0]))
-    for word in words.sort():
+    words.sort()
+    for word in words:
         lesson_str += word + "\n"
     return render_template("update.html", lesson_str=lesson_str, lesson_get=lesson_get, auth=auth)
 
