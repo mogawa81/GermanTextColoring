@@ -38,9 +38,11 @@ def compileWords(database, num):
 def lemmatize(line):
     mails_lemma = []
     tagger = ht.HanoverTagger("morphmodel_ger.pgz")
-    for mail in line.split():
-        lemma = [lemma for (word,lemma,pos) in tagger.tag_sent(mail.split())]
-        mails_lemma.append(' '.join(lemma))
+    words = nltk.tokenize.word_tokenize(line)
+    #for mail in line.split():
+        #lemma = [lemma for (word,lemma,pos) in tagger.tag_sent(mail.split())]
+        #mails_lemma.append(' '.join(lemma))
+    mails_lemma = [lemma for (word, lemma, pos) in tagger.tag_sent(words)]
     return mails_lemma
         
 def extractProperNouns(text):
