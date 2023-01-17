@@ -170,7 +170,7 @@ def update(auth):
     for word in get_lesson(lesson_get):
         words.append(str(word[0]))
     words.sort()
-    print(words)
+    #print(words) FOR TESTING
     for word in words:
         lesson_str += word + "\n"
     return render_template("update.html", lesson_str=lesson_str, lesson_get=lesson_get, auth=auth)

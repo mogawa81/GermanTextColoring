@@ -20,7 +20,7 @@
         <select id="delete-list" name="delete-list">
             <OPTION value="None">Select a Chapter</option>
             {% for row in vocabulary %}
-                <OPTION value="{{row[0]}}">Chapter {{row[0]}}</option>
+                <OPTION value="{{row}}">Chapter {{row}}</option>
             {% endfor %}
         </select>
         <input type="submit" value="Delete">
