@@ -164,9 +164,9 @@ def update(auth):
     #array to alphabetize words
     words = []
     for word in get_lesson(lesson_get):
-        words.append(word[0])
+        words.append(str(word[0]))
     for word in words.sort():
-        lesson_str += str(word) + "\n"
+        lesson_str += word + "\n"
     return render_template("update.html", lesson_str=lesson_str, lesson_get=lesson_get, auth=auth)
 
 #UPDATE CHAPTER LIST STEP 2
