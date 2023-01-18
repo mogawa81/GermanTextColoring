@@ -69,12 +69,12 @@ def readability(wordBank, text):
     #f = text.splitlines()
     formattedText = str(text)
     #1: take out all punctuation
-    originalText = text.translate(str.maketrans('','',string.punctuation))
+    unpunctuatedText = text.translate(str.maketrans('','',string.punctuation))
     #2: lemmatize
-    lemmas = lemmatize(text)
+    lemmas = lemmatize(unpunctuatedText)
     print(lemmas)
     #3: Keep a count of the words in the original text
-    originalText = originalText.split()
+    unpunctuatedText = unpunctuatedText.split()
     wordsCount = 0
     #4: Lemma ForLoop
     for lemma in lemmas:
@@ -86,12 +86,12 @@ def readability(wordBank, text):
             if lemma in wordBank:
                 numerator += 1
                 # find the corresponding word in the text
-                word = originalText[wordsCount]
+                word = unpunctuatedText[wordsCount]
                 # add the word to the new dict under the lemma list
                 foundLemmas[lemma] = [word]
             else:
                 # replace all occurrences of the non-vocab word in the text with html formatted color code
-                word = originalText[wordsCount]
+                word = unpunctuatedText[wordsCount]
                 if word not in nonVocab and not word.isnumeric():
                     nonVocab[word] = None
                     formattedText = re.sub(r'\b'+word+r'\b', formatted(word), formattedText)
@@ -149,7 +149,7 @@ def readability(wordBank, text):
     #             if word not in foundLemmas[lemma]:
     #                 foundLemmas[lemma].append(word)
     #             #DELETE:
-    #             #line = re.sub(r'\b'+word+r'\b', formatted(word, lesson, colors), line)
+    #             #line = re.sub(r'\b'+word+r'\b', formatted(word), line)
     #         wordsCount += 1
     #     formatted_text += " " + line
     # #extract proper nouns
