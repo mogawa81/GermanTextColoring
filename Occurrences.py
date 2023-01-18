@@ -60,51 +60,49 @@ def formatted(word):
 def readability(wordBank, text):
     # dict for lemmas found in the text
     foundLemmas = {}
+    #dict for non-vocab words in the text
+    nonVocab = {}
     #dict returning readability, proper nouns, html formatted text
     outDict = {"Readability":0, "Proper Nouns":[], "Text": ""} 
     numerator = 0
     denominator = 0
-    f = text.splitlines()
-    formatted_text = ''''''
-    for line in f:
-        line_unpunctuated = line.translate(str.maketrans('','',string.punctuation))
-        #lemmatize and see if they are in the vocab list
-        lemmas = lemmatize(line_unpunctuated)
-        print(lemmas)
-        words = line_unpunctuated.split()
-        wordsCount = 0
-        for lemma in lemmas:
-            lemma = lemma.lower()
-            denominator += 1
-            # if lemma has not been previously seen and stored in foundLemmas
-            if lemma not in foundLemmas:
-                # if lemma is in the word bank, check if conjugation is in the list for that lemma
-                if lemma in wordBank:
-                    numerator += 1
-                    # DELETED: add the lesson number as the first element of the lemma in new dict
-                    #lesson = wordBank[lemma][0]
-                    #foundLemmas[lemma] = [lesson]
-                    #------------------------------------------------------------------------------
-                    # find the corresponding word in the text
-                    word = words[wordsCount]
-                    # add the word to the new dict under the lemma list
-                    foundLemmas[lemma] = [word]
-                # if word is not a vocab word in the wordbank, color RED
-                else:
-                    # replace the non-vocab word in the text with html formatted color code
-                    word = words[wordsCount]
-                    # if a word is a number, don't color
-                    if not word.isnumeric():
-                        line = re.sub(r'\b'+word+r'\b', formatted(word), line)
-            elif lemma in foundLemmas:
+    #f = text.splitlines()
+    formattedText = ''''''
+    #1: take out all punctuation
+    originalText = text.translate(str.maketrans('','',string.punctuation))
+    #2: lemmatize
+    lemmas = lemmatize(text)
+    print(lemmas)
+    #3: Keep a count of the words in the original text
+    originalText = originalText.split()
+    wordsCount = 0
+    #4: Lemma ForLoop
+    for lemma in lemmas:
+        denominator += 1
+        lemma = lemma.lower()
+         # if lemma has not been previously seen and stored in foundLemmas
+        if lemma not in foundLemmas:
+            # if lemma is in the word bank, check if conjugation is in the list for that lemma
+            if lemma in wordBank:
                 numerator += 1
-                word = words[wordsCount]
-                if word not in foundLemmas[lemma]:
-                    foundLemmas[lemma].append(word)
-                #DELETE:
-                #line = re.sub(r'\b'+word+r'\b', formatted(word, lesson, colors), line)
-            wordsCount += 1
-        formatted_text += " " + line
+                # find the corresponding word in the text
+                word = originalText[wordsCount]
+                # add the word to the new dict under the lemma list
+                foundLemmas[lemma] = [word]
+            else:
+                # replace all occurrences of the non-vocab word in the text with html formatted color code
+                word = originalText[wordsCount]
+                if word not in nonVocab and not word.isnumeric():
+                    nonVocab[word] = None
+                    formattedText = re.sub(r'\b'+word+r'\b', formatted(word), originalText)
+        # if lemma seen before, add to found vocab score
+        elif lemma in foundLemmas:
+                numerator += 1
+                # add non-lemmatized word to array in Dict under the lemma
+                #word = words[wordsCount]
+                #if word not in foundLemmas[lemma]:
+                    #foundLemmas[lemma].append(word)
+        wordsCount += 1
     #extract proper nouns
     nouns = extractProperNouns(text)
     score = numerator/denominator * 100
@@ -112,8 +110,57 @@ def readability(wordBank, text):
     print(denominator)
     outDict["Readability"] = score
     outDict["Proper Nouns"] = nouns
-    outDict["Text"] = formatted_text
+    outDict["Text"] = formattedText
     return outDict
+#------------------------------------------------------------------------------------------------------------------
+    # for line in f:
+    #     line_unpunctuated = line.translate(str.maketrans('','',string.punctuation))
+    #     #lemmatize and see if they are in the vocab list
+    #     lemmas = lemmatize(line_unpunctuated)
+    #     print(lemmas)
+    #     words = line_unpunctuated.split()
+    #     wordsCount = 0
+    #     for lemma in lemmas:
+    #         lemma = lemma.lower()
+    #         denominator += 1
+    #         # if lemma has not been previously seen and stored in foundLemmas
+    #         if lemma not in foundLemmas:
+    #             # if lemma is in the word bank, check if conjugation is in the list for that lemma
+    #             if lemma in wordBank:
+    #                 numerator += 1
+    #                 # DELETED: add the lesson number as the first element of the lemma in new dict
+    #                 #lesson = wordBank[lemma][0]
+    #                 #foundLemmas[lemma] = [lesson]
+    #                 #------------------------------------------------------------------------------
+    #                 # find the corresponding word in the text
+    #                 word = words[wordsCount]
+    #                 # add the word to the new dict under the lemma list
+    #                 foundLemmas[lemma] = [word]
+    #             # if word is not a vocab word in the wordbank, color RED
+    #             else:
+    #                 # replace the non-vocab word in the text with html formatted color code
+    #                 word = words[wordsCount]
+    #                 # if a word is a number, don't color
+    #                 if not word.isnumeric():
+    #                     line = re.sub(r'\b'+word+r'\b', formatted(word), line)
+    #         elif lemma in foundLemmas:
+    #             numerator += 1
+    #             word = words[wordsCount]
+    #             if word not in foundLemmas[lemma]:
+    #                 foundLemmas[lemma].append(word)
+    #             #DELETE:
+    #             #line = re.sub(r'\b'+word+r'\b', formatted(word, lesson, colors), line)
+    #         wordsCount += 1
+    #     formatted_text += " " + line
+    # #extract proper nouns
+    # nouns = extractProperNouns(text)
+    # score = numerator/denominator * 100
+    # print(numerator)
+    # print(denominator)
+    # outDict["Readability"] = score
+    # outDict["Proper Nouns"] = nouns
+    # outDict["Text"] = formatted_text
+    # return outDict
 
 # FOR TESTING
 def output(foundWords):
@@ -130,4 +177,4 @@ def test():
     foundWords = readability(wordBank, f)
     print(foundWords["Text"])
 
-#test()
+test()

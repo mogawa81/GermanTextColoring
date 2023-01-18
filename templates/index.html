@@ -3,33 +3,7 @@
 <!--replaces the content block in the base html-->
 {% block content %}
 <!--replaces the title block in the base html-->
-    <h1>{% block title %} Vocabulary list {% endblock %}</h1>
-    <form name="edit" action="/" method="POST">
-        <label for="lesson-list">Select a chapter to edit:</label>
-        <select id="lesson-list" name="lesson-list">
-            <OPTION value="None">Select a Chapter</option>
-            {% for row in vocabulary %}
-                <OPTION value="{{row[0]}}">Chapter {{row[0]}}</option>
-            {% endfor %}
-        </select>
-        <input type="submit" value="Edit">
-    </form>
-    
-    <!--
-        <table id="customers">
-        <tr>
-            <th>Chapter</th>
-            <th>Delete</th>
-            <th>Other</th>
-        </tr>
-        {% for row in vocabulary %}
-            <tr>
-            <td>{{ row[0] }}</td>
-            <td><button type='button'>View<onclick='lessonView(this);'class='btn btn-default'></button></td>
-            <td><button type="submit">View</button>&emsp;<button type="submit">Edit</button></td>
-            </tr>
-        {% endfor %}
-        </table>
-    -->
+    <h1>{% block title %} Welcome! {% endblock %}</h1>
+    In the homebar, click "Analyze" to get started. We'll add more about this project later.
     
 {% endblock %}
