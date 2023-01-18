@@ -8,10 +8,6 @@ import psycopg2
 import os
 from init_db import check
 
-# from flask_login import LoginManager, login_required, login_user
-# import flask.ext.login as flask_login
-# from flask.ext.login import LoginManager, UserMixin
-
 #db = SQLAlchemy()
 
 app = Flask(__name__, template_folder='templates')
@@ -21,14 +17,6 @@ check()
 #secret_key = "cloudyWalls2023"
 
 #db.init_app(app)
-    
-#login_manager = LoginManager()
-#login_manager.login_view = 'login'
-#login_manager.init_app(app)
-
-#@login_manager.user_loader
-#def load_user(user_id):
-    #return User.get(user_id)
 
 def get_db_connection():
     #conn = sqlite3.connect('database.db')
@@ -38,9 +26,6 @@ def get_db_connection():
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     cur = conn.cursor()
     return [conn, cur]
-
-#check if table exists
-
 
 def get_lesson(lesson):
     l = get_db_connection()
@@ -79,9 +64,6 @@ def login_post():
         pass_get = cur.fetchone()
         conn.commit()
         if str(pass_get[0]) == password:
-            #user = email_get[0]
-            #login_user(user)
-            #global secret_key
             secret_key = ''.join(random.choices(string.ascii_uppercase + string.ascii_lowercase + string.digits, k=8))
             cur.execute("""UPDATE dbMasters SET pass=%s WHERE email='s3cretkey'""", (secret_key,))
             conn.commit()
@@ -146,7 +128,6 @@ def update(auth):
     if lesson_get == 'None':
         print("no lesson selected")
         return redirect(url_for('edit', auth=auth))
-    #if request.method =='POST':
     lesson_str = ''
     #array to alphabetize words
     words = []
@@ -181,9 +162,6 @@ def update2(lesson_get, auth):
             conn.close()
             return render_template("update.html", lesson_str=lesson_str, lesson_get=lesson_get, auth=auth)
         else:
-            #l = get_db_connection()
-            #conn = l[0]
-            #cur = l[1]
             words = text.split('\r')
             lesson_list = []
             for item in get_lesson(lesson_get):
@@ -210,7 +188,6 @@ def update2(lesson_get, auth):
 
 #DELETE A CHAPTER LIST
 @app.route('/delete/<auth>', methods=('GET', 'POST'))
-#@login_required
 def delete(auth):
     l = get_db_connection()
     conn = l[0]
@@ -228,9 +205,6 @@ def delete(auth):
         conn.close()
         return redirect(url_for('edit', auth=auth))
     else:
-        #l = get_db_connection()
-        #conn = l[0]
-        #cur = l[1]
         cur.execute('DELETE FROM vocabulary WHERE lesson = %s', (delete_get))
         conn.commit()
         conn.close()
@@ -239,7 +213,6 @@ def delete(auth):
 
 #ADD NEW CHAPTER
 @app.route('/add/<auth>', methods=('GET', 'POST'))
-#@login_required
 def add(auth):
     l = get_db_connection()
     conn = l[0]
@@ -254,7 +227,6 @@ def add(auth):
 
 #ADD NEW CHAPTER STEP 2
 @app.route('/adding/<auth>', methods=('GET', 'POST'))
-#@login_required
 def add2(auth):
     l = get_db_connection()
     conn = l[0]
@@ -273,9 +245,6 @@ def add2(auth):
         elif not text:
             flash("At least 1 word is required!")
         else:
-            #l = get_db_connection()
-            #conn = l[0]
-            #cur = l[1]
             cur.execute('SELECT DISTINCT lesson FROM vocabulary')
             lessons = cur.fetchall()
             conn.commit()
@@ -305,6 +274,7 @@ def analyze():
     if request.method == 'POST':
         chapters = request.form["chapters"]
         text = request.form['text']
+        print(text)
         if chapters == "":
             chapters = -1
         else:
@@ -328,15 +298,11 @@ def analyze():
             flash('At least 1 word is required!')
         else:
             print("compiling words...")
-            wordBank = compileWords("database.db", chapters)
+            wordBank = compileWords(chapters)
             print("calculating readability...")
             foundWords = readability(wordBank, text)
-            #print("writing to template...")
-            #write_to_template(foundWords, text)
             print("rendering template...")
-            return render_template('analyze_out.html', readability=foundWords["Readability"], properNouns=foundWords["Proper Nouns"], text=foundWords["Text"])
-            #return "Readability: "+str(foundWords["Readability"])+"%"
-            
+            return render_template('analyze_out.html', readability=foundWords["Readability"], properNouns=foundWords["Proper Nouns"], text=foundWords["Text"])   
     return render_template('analyze.html')
 
 if __name__ == '__main__':
