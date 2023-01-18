@@ -274,7 +274,6 @@ def analyze():
     if request.method == 'POST':
         chapters = request.form["chapters"]
         text = request.form['text']
-        print(text)
         if chapters == "":
             chapters = -1
         else:
