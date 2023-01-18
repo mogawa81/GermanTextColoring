@@ -97,7 +97,7 @@ def login_post():
     return redirect(url_for('login'))
 
 # homepage
-@app.route('/', methods=['GET','POST'])
+@app.route('/')
 def index():
     return render_template('index.html')
 
