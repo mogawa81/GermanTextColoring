@@ -67,7 +67,7 @@ def readability(wordBank, text):
     numerator = 0
     denominator = 0
     #f = text.splitlines()
-    formattedText = ''''''
+    formattedText = text
     #1: take out all punctuation
     originalText = text.translate(str.maketrans('','',string.punctuation))
     #2: lemmatize
