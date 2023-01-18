@@ -68,7 +68,6 @@ def readability(wordBank, text):
     denominator = 0
     #f = text.splitlines()
     formattedText = str(text)
-    print(formattedText)
     #1: take out all punctuation
     unpunctuatedText = text.translate(str.maketrans('','',string.punctuation))
     #2: lemmatize
@@ -96,6 +95,7 @@ def readability(wordBank, text):
                 if word not in nonVocab and not word.isnumeric():
                     nonVocab[word] = None
                     formattedText = re.sub(r'\b'+word+r'\b', formatted(word), formattedText)
+                    print(formattedText)
         # if lemma seen before, add to found vocab score
         elif lemma in foundLemmas:
                 numerator += 1
