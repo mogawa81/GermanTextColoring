@@ -99,24 +99,7 @@ def login_post():
 # homepage
 @app.route('/', methods=['GET','POST'])
 def index():
-    l = get_db_connection()
-    conn = l[0]
-    cur = l[1]
-    cur.execute('SELECT DISTINCT lesson FROM vocabulary')
-    vocabulary = cur.fetchall()
-    conn.close()
-    lesson_get = request.form.get('lesson-list')
-    if request.method == 'POST':
-        if lesson_get == 'None':
-            print("no lesson selected")
-            render_template('index.html', vocabulary=vocabulary)
-        else:
-            lesson_list = ''
-            for word in get_lesson(lesson_get):
-                lesson_list += word['word'] + "\n"
-            #print(lesson_list)
-            render_template('index.html', vocabulary=vocabulary)
-    return render_template('index.html', vocabulary=vocabulary)
+    return render_template('index.html')
 
 #EDIT DATABASE MENU
 @app.route('/edit/<auth>', methods=('GET', 'POST'))
