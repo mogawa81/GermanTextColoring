@@ -94,7 +94,7 @@ def readability(wordBank, text):
                 word = originalText[wordsCount]
                 if word not in nonVocab and not word.isnumeric():
                     nonVocab[word] = None
-                    formattedText = re.sub(r'\b'+word+r'\b', formatted(word), originalText)
+                    formattedText = re.sub(r'\b'+word+r'\b', formatted(word), formattedText)
         # if lemma seen before, add to found vocab score
         elif lemma in foundLemmas:
                 numerator += 1
