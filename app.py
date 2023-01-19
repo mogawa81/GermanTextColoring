@@ -1,4 +1,4 @@
-from Occurrences import compileWords, lemmatize, extractProperNouns, readability
+from Occurrences import compileWords, readability
 #from analyze_out import write_to_template
 #import sqlite3
 from flask import Flask, render_template, request, url_for, flash, redirect, abort, Blueprint
@@ -104,7 +104,7 @@ def edit(auth):
     vocab_sorted = []
     for lesson in vocabulary:
         vocab_sorted.append(lesson[0])
-    vocab_sorted.sort()
+    vocab_sorted.sort(key=str.lower)
     return render_template('edit.html', vocabulary=vocab_sorted, auth=auth)
 
 #UPDATE A CHAPTER LIST
