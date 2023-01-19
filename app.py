@@ -104,6 +104,7 @@ def edit(auth):
     vocab_sorted = []
     for lesson in vocabulary:
         vocab_sorted.append(lesson[0])
+    print(vocab_sorted)
     vocab_sorted.sort(key=str.lower)
     return render_template('edit.html', vocabulary=vocab_sorted, auth=auth)
 
