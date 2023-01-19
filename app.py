@@ -103,9 +103,9 @@ def edit(auth):
     conn.close()
     vocab_sorted = []
     for lesson in vocabulary:
-        vocab_sorted.append(str(lesson[0]))
-    print(vocab_sorted)
-    vocab_sorted.sort(key=str.lower)
+        vocab_sorted.append(lesson[0])
+    vocab_sorted
+    vocab_sorted.sort()
     return render_template('edit.html', vocabulary=vocab_sorted, auth=auth)
 
 #UPDATE A CHAPTER LIST
@@ -134,7 +134,7 @@ def update(auth):
     words = []
     for word in get_lesson(lesson_get):
         words.append(str(word[0]))
-    words.sort()
+    words.sort(key=str.lower)
     #print(words) FOR TESTING
     for word in words:
         lesson_str += word + "\n"
@@ -142,7 +142,6 @@ def update(auth):
 
 #UPDATE CHAPTER LIST STEP 2
 @app.route('/update/<int:lesson_get>/<auth>', methods=('GET', 'POST'))
-#@login_required
 def update2(lesson_get, auth):
     l = get_db_connection()
     conn = l[0]
