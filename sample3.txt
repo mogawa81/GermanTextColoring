@@ -6,3 +6,5 @@ gehe gehst geht
 ging gingst gingen gingt
 gedurft
 leistetet
+wartetet
+warte
