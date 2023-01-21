@@ -110,7 +110,6 @@ def edit(auth):
 
 #UPDATE A CHAPTER LIST
 @app.route('/update/<auth>', methods=('GET', 'POST'))
-#@login_required
 def update(auth):
     l = get_db_connection()
     conn = l[0]

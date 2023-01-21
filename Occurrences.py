@@ -72,7 +72,7 @@ def readability(wordBank, text):
     unpunctuatedText = text.translate(str.maketrans('','',string.punctuation))
     #2: lemmatize
     lemmas = lemmatize(unpunctuatedText)
-    print(lemmas)
+    print("Lemmas pass 1 (words with ge- retain prefix:)", lemmas)
     #3: Keep a count of the words in the original text
     unpunctuatedText = unpunctuatedText.split()
     wordsCount = 0
@@ -89,6 +89,24 @@ def readability(wordBank, text):
                 word = unpunctuatedText[wordsCount]
                 # add the word to the new dict under the lemma list
                 foundLemmas[lemma] = [word]
+            # if it starts with the prefix ge- then remove it manually and check if it's a lemma
+            elif lemma[:2] == 'ge':
+                no_ge_prefix = lemmatize(lemma[2:])[0]
+                if no_ge_prefix not in foundLemmas:
+                    if no_ge_prefix in wordBank:
+                        numerator += 1
+                        word = unpunctuatedText[wordsCount]
+                        foundLemmas[no_ge_prefix] = [word]
+                        print("Lemma recognized without ge-: ", lemma, no_ge_prefix)
+                    else:
+                        # replace all occurrences of the non-vocab word in the text with html formatted color code
+                        word = unpunctuatedText[wordsCount]
+                        if word not in nonVocab and not word.isnumeric():
+                            nonVocab[word] = None
+                            formattedText = re.sub(r'\b'+word+r'\b', formatted(word), formattedText)
+                elif no_ge_prefix in foundLemmas:
+                    numerator += 1
+                    print("Lemma recognized without ge-: ", lemma, no_ge_prefix)
             else:
                 # replace all occurrences of the non-vocab word in the text with html formatted color code
                 word = unpunctuatedText[wordsCount]
@@ -122,7 +140,7 @@ def output(foundWords):
 #FOR TESTING
 def test():
     print("in Occurences.py!")
-    wordBank = {"arbeiten", "finden", "fragen", "gehen"}
+    wordBank = {"arbeiten", "finden", "fragen", "gehen", "dürfen"}
     print("compiled words!")
     f = open("sample3.txt", 'r')
     f = f.read()
