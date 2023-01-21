@@ -72,7 +72,7 @@ def readability(wordBank, text):
     unpunctuatedText = text.translate(str.maketrans('','',string.punctuation))
     #2: lemmatize
     lemmas = lemmatize(unpunctuatedText)
-    print("Lemmas pass 1 (words with ge- retain prefix:)", lemmas)
+    print("Lemmas pass 1", lemmas)
     #3: Keep a count of the words in the original text
     unpunctuatedText = unpunctuatedText.split()
     wordsCount = 0
@@ -80,6 +80,7 @@ def readability(wordBank, text):
     for lemma in lemmas:
         denominator += 1
         lemma = lemma.lower()
+        newLemma = ""
          # if lemma has not been previously seen and stored in foundLemmas
         if lemma not in foundLemmas:
             # if lemma is in the word bank, check if conjugation is in the list for that lemma
@@ -91,22 +92,26 @@ def readability(wordBank, text):
                 foundLemmas[lemma] = [word]
             # if it starts with the prefix ge- then remove it manually and check if it's a lemma
             elif lemma[:2] == 'ge':
-                no_ge_prefix = lemmatize(lemma[2:])[0]
-                if no_ge_prefix not in foundLemmas:
-                    if no_ge_prefix in wordBank:
+                newLemma = lemmatize(lemma[2:])[0]
+            # if it ends with -tet suffix, remove and re-analyze
+            elif lemma[-3:] == 'tet':
+                newLemma = lemmatize(lemma[:-3])[0]
+            if newLemma != "":
+                if newLemma not in foundLemmas:
+                    if newLemma in wordBank:
                         numerator += 1
                         word = unpunctuatedText[wordsCount]
-                        foundLemmas[no_ge_prefix] = [word]
-                        print("Lemma recognized without ge-: ", lemma, no_ge_prefix)
+                        foundLemmas[newLemma] = [word]
+                        print("Lemma stemmed: ", lemma, newLemma)
                     else:
                         # replace all occurrences of the non-vocab word in the text with html formatted color code
                         word = unpunctuatedText[wordsCount]
                         if word not in nonVocab and not word.isnumeric():
                             nonVocab[word] = None
                             formattedText = re.sub(r'\b'+word+r'\b', formatted(word), formattedText)
-                elif no_ge_prefix in foundLemmas:
+                elif newLemma in foundLemmas:
                     numerator += 1
-                    print("Lemma recognized without ge-: ", lemma, no_ge_prefix)
+                    print("Lemma stemmed: ", lemma, newLemma)
             else:
                 # replace all occurrences of the non-vocab word in the text with html formatted color code
                 word = unpunctuatedText[wordsCount]
@@ -140,7 +145,7 @@ def output(foundWords):
 #FOR TESTING
 def test():
     print("in Occurences.py!")
-    wordBank = {"arbeiten", "finden", "fragen", "gehen", "dürfen"}
+    wordBank = {"arbeiten", "finden", "fragen", "gehen", "dürfen", "leisten"}
     print("compiled words!")
     f = open("sample3.txt", 'r')
     f = f.read()
