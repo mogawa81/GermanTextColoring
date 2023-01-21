@@ -112,7 +112,7 @@ def readability(wordBank, text):
                 elif newLemma in foundLemmas:
                     numerator += 1
                     print("Lemma stemmed: ", lemma, newLemma)
-            else:
+            elif lemma not in wordBank and newLemma == "":
                 # replace all occurrences of the non-vocab word in the text with html formatted color code
                 word = unpunctuatedText[wordsCount]
                 if word not in nonVocab and not word.isnumeric():
