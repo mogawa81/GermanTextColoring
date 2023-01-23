@@ -204,6 +204,7 @@ def delete(auth):
         conn.close()
         return redirect(url_for('edit', auth=auth))
     else:
+        print(type(delete_get))
         cur.execute('DELETE FROM vocabulary WHERE lesson = %s', (str(delete_get)))
         conn.commit()
         conn.close()
