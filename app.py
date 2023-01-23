@@ -197,8 +197,7 @@ def delete(auth):
         flash("Please log in to access the database")
         conn.close()
         return redirect(url_for('login'))
-    delete_get = request.form.get('delete-list')
-    print(delete_get)
+    delete_get = str(request.form.get('delete-list'))
     #IF NO LESSON SELECTED, DO NOTHING
     if delete_get == 'None':
         print("no lesson selected")
