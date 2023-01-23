@@ -197,15 +197,14 @@ def delete(auth):
         flash("Please log in to access the database")
         conn.close()
         return redirect(url_for('login'))
-    delete_get = str(request.form.get('delete-list'))
+    delete_get = int(request.form.get('delete-list'))
     #IF NO LESSON SELECTED, DO NOTHING
     if delete_get == 'None':
         print("no lesson selected")
         conn.close()
         return redirect(url_for('edit', auth=auth))
     else:
-        print(type(delete_get))
-        cur.execute('DELETE FROM vocabulary WHERE lesson = %s', (str(delete_get)))
+        cur.execute('DELETE FROM vocabulary WHERE lesson = %s', (delete_get))
         conn.commit()
         conn.close()
         flash("Chapter "+str(delete_get)+" deleted.")
