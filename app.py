@@ -198,6 +198,7 @@ def delete(auth):
         conn.close()
         return redirect(url_for('login'))
     delete_get = request.form.get('delete-list')
+    print(delete_get)
     #IF NO LESSON SELECTED, DO NOTHING
     if delete_get == 'None':
         print("no lesson selected")
