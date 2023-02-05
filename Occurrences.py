@@ -1,5 +1,7 @@
 import nltk
 nltk.download('punkt')
+nltk.download('stopwords')
+from nltk.corpus import stopwords
 #import spacy
 import string
 from HanTa import HanoverTagger as ht
@@ -22,7 +24,7 @@ def compileWords(num):
     size = cur.fetchone()
     if num == -1:
         num = str(size[0])
-    wordBank = {}
+    wordBank = {"stopword000": None}
     cur.execute("SELECT word FROM vocabulary WHERE lesson BETWEEN 1 and "+ num)
     vocabList = cur.fetchall()
     conn.commit()
@@ -35,21 +37,31 @@ def compileWords(num):
     conn.close()
     return wordBank
 
-def lemmatize(line):
+def lemmatize(words):
     mails_lemma = []
     tagger = ht.HanoverTagger("morphmodel_ger.pgz")
-    words = nltk.tokenize.word_tokenize(line)
     #for mail in line.split():
         #lemma = [lemma for (word,lemma,pos) in tagger.tag_sent(mail.split())]
         #mails_lemma.append(' '.join(lemma))
     mails_lemma = [lemma for (word, lemma, pos) in tagger.tag_sent(words)]
     return mails_lemma
         
-def extractProperNouns(text):
+def extractProperNouns(words):
     tagger = ht.HanoverTagger('morphmodel_ger.pgz')
-    words = nltk.tokenize.word_tokenize(text)
     tokens=[word for (word,x,pos) in tagger.tag_sent(words,taglevel= 1) if pos == 'NE']
     return tokens
+
+def removeStopWords(words):
+    stopWords = set(stopwords.words('german'))
+    stopWords_inText = []
+    count = 0
+    for w in words:
+        if w in stopWords_inText:
+            words[count] = "stopword000"
+        elif w in stopWords:
+            words[count] = "stopword000"
+        count += 1
+    return words
 
 def formatted(word):
     code = "#FF5733" #Bright red
@@ -59,7 +71,7 @@ def formatted(word):
 
 def readability(wordBank, text):
     # dict for lemmas found in the text
-    foundLemmas = {}
+    foundLemmas = {"stopword000": ["stopword000"]}
     #dict for non-vocab words in the text
     nonVocab = {}
     #dict returning readability, proper nouns, html formatted text
@@ -71,7 +83,9 @@ def readability(wordBank, text):
     #1: take out all punctuation
     unpunctuatedText = text.translate(str.maketrans('','',string.punctuation))
     #2: lemmatize
-    lemmas = lemmatize(unpunctuatedText)
+    tokenized = nltk.tokenize.word_tokenize(unpunctuatedText)
+    lemmas = lemmatize(tokenized)
+    lemmas = removeStopWords(lemmas)
     print("Lemmas pass 1", lemmas)
     #3: Keep a count of the words in the original text
     unpunctuatedText = unpunctuatedText.split()
@@ -130,7 +144,7 @@ def readability(wordBank, text):
                     #foundLemmas[lemma].append(word)
         wordsCount += 1
     #extract proper nouns
-    nouns = extractProperNouns(text)
+    nouns = extractProperNouns(tokenized)
     score = numerator/denominator * 100
     print(numerator)
     print(denominator)
@@ -148,7 +162,7 @@ def output(foundWords):
 #FOR TESTING
 def test():
     print("in Occurences.py!")
-    wordBank = {"arbeiten", "finden", "fragen", "gehen", "dürfen", "leisten", "warten"}
+    wordBank = {"versuchen", "finden", "ich", "stopword000"}
     print("compiled words!")
     f = open("sample3.txt", 'r')
     f = f.read()
