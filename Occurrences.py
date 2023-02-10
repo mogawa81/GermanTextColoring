@@ -49,6 +49,7 @@ def lemmatize(words):
 def extractProperNouns(words):
     tagger = ht.HanoverTagger('morphmodel_ger.pgz')
     tokens=[word for (word,x,pos) in tagger.tag_sent(words,taglevel= 1) if pos == 'NE']
+    tokens = list(dict.fromkeys(tokens))
     return tokens
 
 def removeStopWords(words):
@@ -63,11 +64,15 @@ def removeStopWords(words):
         count += 1
     return words
 
-def formatted(word):
+def formattedGray(word):
+    code = "#A0A0A0" #Gray
+    out = '''<FONT COLOR=''' + code + '''>''' + word + '''</FONT>'''
+    return out
+
+def formattedRed(word):
     code = "#FF5733" #Bright red
     out = '''<FONT COLOR=''' + code + '''>''' + word + '''</FONT>'''
     return out
-    
 
 def readability(wordBank, text):
     # dict for lemmas found in the text
@@ -90,7 +95,11 @@ def readability(wordBank, text):
     #3: Keep a count of the words in the original text
     unpunctuatedText = unpunctuatedText.split()
     wordsCount = 0
-    #4: Lemma ForLoop
+    #4extract proper nouns
+    nouns = extractProperNouns(tokenized)
+    print("----------------------------------------------")
+    print(nouns)
+    #5: Lemma ForLoop
     for lemma in lemmas:
         denominator += 1
         lemma = lemma.lower()
@@ -125,7 +134,7 @@ def readability(wordBank, text):
                         word = unpunctuatedText[wordsCount]
                         if word not in nonVocab and not word.isnumeric():
                             nonVocab[word] = None
-                            formattedText = re.sub(r'\b'+word+r'\b', formatted(word), formattedText)
+                            formattedText = re.sub(r'\b'+word+r'\b', formattedRed(word), formattedText)
                 elif newLemma in foundLemmas:
                     numerator += 1
                     print("Lemma stemmed: ", lemma, newLemma)
@@ -133,8 +142,12 @@ def readability(wordBank, text):
                 # replace all occurrences of the non-vocab word in the text with html formatted color code
                 word = unpunctuatedText[wordsCount]
                 if word not in nonVocab and not word.isnumeric():
-                    nonVocab[word] = None
-                    formattedText = re.sub(r'\b'+word+r'\b', formatted(word), formattedText)
+                    if word in nouns:
+                        nonVocab[word] = None
+                        formattedText = re.sub(r'\b'+word+r'\b', formattedGray(word), formattedText)
+                    else:
+                        nonVocab[word] = None
+                        formattedText = re.sub(r'\b'+word+r'\b', formattedRed(word), formattedText)
         # if lemma seen before, add to found vocab score
         elif lemma in foundLemmas:
                 numerator += 1
@@ -143,8 +156,6 @@ def readability(wordBank, text):
                 #if word not in foundLemmas[lemma]:
                     #foundLemmas[lemma].append(word)
         wordsCount += 1
-    #extract proper nouns
-    nouns = extractProperNouns(tokenized)
     score = numerator/denominator * 100
     print(numerator)
     print(denominator)
