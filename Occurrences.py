@@ -161,6 +161,7 @@ def readability(wordBank, text):
     print("total words: ",denominator)
     print("wordBank:",len(wordBank))
     print("nonVocab:", len(nonVocab))
+    print("vocab",len(foundLemmas))
     outDict["Readability"] = score
     outDict["Proper Nouns"] = nouns
     formattedText = re.sub('\n', "<br>", formattedText)
