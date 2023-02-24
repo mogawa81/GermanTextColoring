@@ -95,10 +95,10 @@ def readability(wordBank, text):
     #3: Keep a count of the words in the original text
     unpunctuatedText = unpunctuatedText.split()
     wordsCount = 0
-    #4extract proper nouns
+    #4: extract proper nouns
     nouns = extractProperNouns(tokenized)
     print("----------------------------------------------")
-    print(nouns)
+    #print(nouns)
     #5: Lemma ForLoop
     for lemma in lemmas:
         denominator += 1
@@ -157,8 +157,10 @@ def readability(wordBank, text):
                     #foundLemmas[lemma].append(word)
         wordsCount += 1
     score = numerator/denominator * 100
-    print(numerator)
-    print(denominator)
+    print("vocab words: ",numerator)
+    print("total words: ",denominator)
+    print("foundLemmas:",len(foundLemmas))
+    print("nonVocab:", len(nonVocab))
     outDict["Readability"] = score
     outDict["Proper Nouns"] = nouns
     formattedText = re.sub('\n', "<br>", formattedText)
