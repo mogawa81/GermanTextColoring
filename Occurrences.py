@@ -159,7 +159,7 @@ def readability(wordBank, text):
     score = numerator/denominator * 100
     print("vocab words: ",numerator)
     print("total words: ",denominator)
-    print("foundLemmas:",len(foundLemmas))
+    print("wordBank:",len(wordBank))
     print("nonVocab:", len(nonVocab))
     outDict["Readability"] = score
     outDict["Proper Nouns"] = nouns
