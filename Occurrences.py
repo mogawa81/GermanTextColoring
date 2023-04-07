@@ -86,7 +86,6 @@ def readability(wordBank, text):
     denominator = 0
     #f = text.splitlines()
     formattedText = str(text)
-    compounds = [] # keep track of compound words
     #1: take out all punctuation
     unpunctuatedText = text.translate(str.maketrans('','',string.punctuation))
     #2: lemmatize
@@ -123,8 +122,7 @@ def readability(wordBank, text):
                     miniLemma = miniLemma[0].lower()
                     if miniLemma in wordBank:
                         numerator += 1
-                        if word not in compounds:
-                            compounds.append(word)
+                        foundLemmas[miniLemma] = [word]
                         print("Compound word found: ",miniLemma," in ",word)
             # if it starts with the prefix ge- then remove it manually and check if it's a lemma
             elif lemma[:2] == 'ge':
@@ -145,7 +143,7 @@ def readability(wordBank, text):
                     else:
                         # replace all occurrences of the non-vocab word in the text with html formatted color code
                         word = unpunctuatedText[wordsCount]
-                        if word not in (nonVocab or compounds) and not word.isnumeric():
+                        if word not in nonVocab and not word.isnumeric():
                             nonVocab[word] = None
                             formattedText = re.sub(r'\b'+word+r'\b', formattedRed(word), formattedText)
                 elif newLemma in foundLemmas:
