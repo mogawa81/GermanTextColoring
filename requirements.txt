@@ -3,4 +3,4 @@ psycopg2
 nltk
 HanTa
 gunicorn
-compound_split
+compound-split
