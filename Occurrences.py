@@ -115,17 +115,17 @@ def readability(wordBank, text):
                 word = unpunctuatedText[wordsCount]
                 # add the word to the new dict under the lemma list
                 foundLemmas[lemma] = [word]
-            elif char_split.split_compound(unpunctuatedText[wordsCount])[0][0] >= 0.6:
-                word = unpunctuatedText[wordsCount]
-                arr = (char_split.split_compound(word)[0][0:])
-                for i in range(2):
-                    miniLemma = lemmatize([arr[i+1]])
-                    miniLemma = miniLemma[0].lower()
-                    if miniLemma in wordBank:
-                        numerator += 1
-                        if word not in compounds:
-                            compounds.append(word)
-                        print("Compound word found: ",miniLemma," in ",word)
+            # elif char_split.split_compound(unpunctuatedText[wordsCount])[0][0] >= 0.6:
+            #     word = unpunctuatedText[wordsCount]
+            #     arr = (char_split.split_compound(word)[0][0:])
+            #     for i in range(2):
+            #         miniLemma = lemmatize([arr[i+1]])
+            #         miniLemma = miniLemma[0].lower()
+            #         if miniLemma in wordBank:
+            #             numerator += 1
+            #             if word not in compounds:
+            #                 compounds.append(word)
+            #             print("Compound word found: ",miniLemma," in ",word)
             # if it starts with the prefix ge- then remove it manually and check if it's a lemma
             elif lemma[:2] == 'ge':
                 newLemma = lemmatize(lemma[2:])[0].lower()
