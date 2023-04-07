@@ -129,6 +129,12 @@ def readability(wordBank, text):
             # if it starts with the prefix ge- then remove it manually and check if it's a lemma
             elif lemma[:2] == 'ge':
                 newLemma = lemmatize(lemma[2:])[0].lower()
+            # if it ends with -tet suffix, remove and re-analyze
+            elif lemma[-3:] == 'tet':
+                newLemma = lemmatize(lemma[:-3])[0].lower()
+            # -test
+            elif lemma[-4:] == 'test':
+                newLemma = lemmatize(lemma[:-4])[0].lower()
             if newLemma != "":
                 if newLemma not in foundLemmas:
                     if newLemma in wordBank:
