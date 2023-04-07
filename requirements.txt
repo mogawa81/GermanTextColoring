@@ -5,3 +5,4 @@ HanTa
 spacy
 gunicorn
 compound-split
+compound-word-splitter
