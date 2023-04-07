@@ -9,8 +9,7 @@ from HanTa import HanoverTagger as ht
 import re
 import psycopg2
 import os
-import compound_split 
-#from compound_split import char_split
+from compound_split import char_split
 
 #nlp = spacy.load('de_core_news_sm')
 
