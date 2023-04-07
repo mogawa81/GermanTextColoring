@@ -4,4 +4,4 @@ nltk
 HanTa
 gunicorn
 compound-split
-charsplit
+#charsplit
