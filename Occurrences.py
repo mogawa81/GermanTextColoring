@@ -9,6 +9,7 @@ from HanTa import HanoverTagger as ht
 import re
 import psycopg2
 import os
+from compound_split import char_split
 
 #nlp = spacy.load('de_core_news_sm')
 
@@ -83,6 +84,7 @@ def readability(wordBank, text):
     outDict = {"Readability":0, "Proper Nouns":[], "Text": ""} 
     numerator = 0
     denominator = 0
+    compounds = []
     #f = text.splitlines()
     formattedText = str(text)
     #1: take out all punctuation
@@ -114,6 +116,17 @@ def readability(wordBank, text):
                 # add the word to the new dict under the lemma list
                 foundLemmas[lemma] = [word]
             # if it starts with the prefix ge- then remove it manually and check if it's a lemma
+            elif char_split.split_compound(unpunctuatedText[wordsCount])[0][0] >= 0.6:
+                word = unpunctuatedText[wordsCount]
+                arr = (char_split.split_compound(word)[0][0:])
+                for i in range(2):
+                    miniLemma = lemmatize([arr[i+1]])
+                    miniLemma = miniLemma[0].lower()
+                    if miniLemma in wordBank:
+                        numerator += 1
+                        if word not in compounds:
+                            compounds.append(word)
+                        print("Compound word found: ",miniLemma," in ",word)
             elif lemma[:2] == 'ge':
                 newLemma = lemmatize(lemma[2:])[0].lower()
             # if it ends with -tet suffix, remove and re-analyze
