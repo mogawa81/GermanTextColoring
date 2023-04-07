@@ -4,3 +4,4 @@ nltk
 HanTa
 spacy
 gunicorn
+compound-split
