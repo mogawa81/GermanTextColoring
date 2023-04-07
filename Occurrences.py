@@ -85,8 +85,11 @@ def readability(wordBank, text):
     denominator = 0
     #f = text.splitlines()
     formattedText = str(text)
-    #1: take out all punctuation
-    unpunctuatedText = text.translate(str.maketrans('','',string.punctuation))
+    #1: take out all punctuation except for - and adding german punctuation marks
+    punctuation_list = string.punctuation
+    punctuation_list = punctuation_list.replace("-",'')
+    punctuation_list += "»«"
+    unpunctuatedText = text.translate(str.maketrans('','',punctuation_list))
     #2: lemmatize
     tokenized = nltk.tokenize.word_tokenize(unpunctuatedText)
     lemmas = lemmatize(tokenized)
@@ -183,4 +186,4 @@ def test():
     foundWords = readability(wordBank, f)
     print(foundWords["Text"])
 
-#test()
+test()
