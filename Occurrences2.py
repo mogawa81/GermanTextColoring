@@ -50,6 +50,7 @@ def readability(wordBank, text):
     #dict returning readability, proper nouns, html formatted text
     outDict = {"Readability":0, "Text": ""} 
     formattedText = str(text)   # a really long string with color codes
+    print(formattedText) #TESTING
     #---------------PRE-PROCESSING----------------------------------------------------------
     #1: take out all punctuation except for - and adding german punctuation marks
     unpunctuatedText = unpunctuate(text)
