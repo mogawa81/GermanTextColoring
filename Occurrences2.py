@@ -84,12 +84,12 @@ def readability(wordBank, text):
             elif tup[0] in stopWords or tup[1] in stopWords:
                 continue
     #4: if the word has an adjective ending, check if it's a present/past participle
-            elif tup[2] == 'ADJA' and ((tup[1][-2:] in adjEndings) or (tup[1][-1:] == 'e') or (tup[1][-1:] == 'd')):
+            elif (tup[2] == 'ADJA' or tup[2] == 'ADJ(A)') and ((tup[1][-2:] in adjEndings) or (tup[1][-1:] == 'e') or (tup[1][-1:] == 'd')):
                 if tup[1][-1:] == 'd':
                     newLemma = tagger_de.analyze(tup[1][:-1])
                 else:
                     newLemma = tagger_de.analyze(tup[1])
-                    print(newLemma)
+                    #print(newLemma)
     #5: if the word is a particple with an adjective ending, but not a vocab word, color it red
                 if newLemma[1] not in wordBank:
                     temp = re.subn(r'\b'+tup[0]+r'\b', formattedRed(tup[0]), formattedText)
