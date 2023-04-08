@@ -102,7 +102,7 @@ def readability(wordBank, text):
             numerator -= temp[1]
     #-----PREPARE THE DATA FOR THE HTML PAGE------------------------------------------------------
     formattedText = re.sub('\n', "<br>", formattedText)     # preserve line breaks in HTML code
-    outDict['Readability'] = str("%s/%s = %s" % (numerator,denominator,(numerator/denominator)))
+    outDict['Readability'] = str("%s/%s = %s" % (numerator,denominator,(numerator/denominator*100)))
     outDict["Text"] = formattedText
     
     return outDict
