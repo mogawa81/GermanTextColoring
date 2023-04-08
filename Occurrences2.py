@@ -50,21 +50,18 @@ def readability(wordBank, text):
     #dict returning readability, proper nouns, html formatted text
     outDict = {"Readability":0, "Text": ""} 
     formattedText = str(text)   # a really long string with color codes
-    #print(text) #TESTING
     #---------------PRE-PROCESSING----------------------------------------------------------
-    #1: take out all punctuation except for - and adding german punctuation marks
-    unpunctuatedText = unpunctuate(text)
-    denominator = len(unpunctuatedText.split())     # total number of words
+    #1: count number of words
+    denominator = len(text.split())     # total number of words
     numerator = denominator
     #2: tokenize
-    tokens = nltk.tokenize.word_tokenize(unpunctuatedText)
+    tokens = nltk.tokenize.word_tokenize(text)
     #3: remove duplicates
     tokens = [*set(tokens)]
     #4: lemmatize
     tagger_de = ht.HanoverTagger('morphmodel_ger.pgz')
     tokens = tagger_de.tag_sent(tokens)
     print("Analysis: ", tokens)     # for debugging purposes
-    
     #-----------------ANALYSIS--------------------------------------------------------------
     # tokens is a list of tuples.
     #   The first element in the tuple is the original word
