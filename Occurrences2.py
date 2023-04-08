@@ -84,7 +84,7 @@ def readability(wordBank, text):
             elif tup[2] == '$.':
                 continue
     #3: if the word is a stopword, continue
-            elif tup[1] in stopWords:
+            elif tup[0] in stopWords or tup[1] in stopWords:
                 continue
     #4: if the word has an adjective ending, check if it's a present/past participle
             elif tup[2] == 'ADJA' and ((tup[1][-2:] in adjEndings) or (tup[1][-1:] == 'e') or (tup[1][-1:] == 'd')):
