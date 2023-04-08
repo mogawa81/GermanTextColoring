@@ -3,6 +3,9 @@ import psycopg2
 import os
 from HanTa import HanoverTagger as ht
 import re
+import nltk
+nltk.download('stopwords')
+from nltk.corpus import stopwords
 
 def compileWords(num):
     DATABASE_URL = os.environ.get('DATABASE_URL')
@@ -40,4 +43,12 @@ def readability(wordBank, text):
     #dict returning readability, proper nouns, html formatted text
     outDict = {"Readability":0, "Text": ""} 
     formattedText = str(text)   # a really long string with color codes
+    #---------------PRE-PROCESSING----------------------------------------------------------
+    #1: count number of words
+    denominator = len(text.split())     # total number of words
+    numerator = denominator
+    #2: tokenize
+    tokens = nltk.tokenize.word_tokenize(text)
+    #3: remove duplicates
+    tokens = [*set(tokens)]
     
