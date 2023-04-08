@@ -53,10 +53,10 @@ def readability(wordBank, text):
     #---------------PRE-PROCESSING----------------------------------------------------------
     #1: take out all punctuation except for - and adding german punctuation marks
     unpunctuatedText = unpunctuate(text)
+    denominator = len(unpunctuatedText.split())     # total number of words
+    numerator = denominator
     #2: tokenize
     tokens = nltk.tokenize.word_tokenize(unpunctuatedText)
-    denominator = len(tokens)      # number of tokens = total number of words
-    numerator = denominator
     #3: remove duplicates
     tokens = [*set(tokens)]
     #4: lemmatize
@@ -77,21 +77,24 @@ def readability(wordBank, text):
             temp = re.subn(r'\b'+tup[0]+r'\b', formattedGray(tup[0]), formattedText)
             formattedText = temp[0]
             numerator -= temp[1]
-    #2: if the word is a stopword, continue
+    #2: if the token is punctuation, continue
+        elif tup[2] == '$.':
+            continue
+    #3: if the word is a stopword, continue
         elif tup[1] in stopWords:
             continue
-    #2: if the word has an adjective ending, check if it's a present/past participle
+    #4: if the word has an adjective ending, check if it's a present/past participle
         elif tup[2] == 'ADJA' and ((tup[1][-2:] in adjEndings) or (tup[1][-1:] == 'e') or (tup[1][-1:] == 'd')):
             if tup[1][-1:] == 'd':
                 newLemma = tagger_de.analyze(tup[1][:-1])
             else:
                 newLemma = tagger_de.analyze(tup[1])
-    #3: if the word is a particple with an adjective ending, but not a vocab word, color it red
+    #5: if the word is a particple with an adjective ending, but not a vocab word, color it red
             if newLemma[1] not in wordBank:
                 temp = re.subn(r'\b'+tup[0]+r'\b', formattedRed(tup[0]), formattedText)
                 formattedText = temp[0]
                 numerator -= temp[1]
-    #4: otherwise, check if the lemma is in the core vocabulary. If not, color red
+    #6: otherwise, check if the lemma is in the core vocabulary. If not, color red
         elif tup[1] not in wordBank:
             temp = re.subn(r'\b'+tup[0]+r'\b', formattedRed(tup[0]), formattedText)
             formattedText = temp[0]
