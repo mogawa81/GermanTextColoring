@@ -73,33 +73,35 @@ def readability(wordBank, text):
     adjEndings = ['es', 'en', 'em', 'er']
     stopWords = set(stopwords.words('german'))
     for tup in tokens:
+    #0: if it is in the vocabulary, do nothing. If not...
+        if tup[1] not in wordBank:
     #1: if the word is a Proper Noun, color all occurrences of it gray
-        if tup[2] == 'NE':
-            temp = re.subn(r'\b'+tup[0]+r'\b', formattedGray(tup[0]), formattedText)
-            formattedText = temp[0]
-            numerator -= temp[1]
+            if tup[2] == 'NE':
+                temp = re.subn(r'\b'+tup[0]+r'\b', formattedGray(tup[0]), formattedText)
+                formattedText = temp[0]
+                numerator -= temp[1]
     #2: if the token is punctuation, continue
-        elif tup[2] == '$.':
-            continue
+            elif tup[2] == '$.':
+                continue
     #3: if the word is a stopword, continue
-        elif tup[1] in stopWords:
-            continue
+            elif tup[1] in stopWords:
+                continue
     #4: if the word has an adjective ending, check if it's a present/past participle
-        elif tup[2] == 'ADJA' and ((tup[1][-2:] in adjEndings) or (tup[1][-1:] == 'e') or (tup[1][-1:] == 'd')):
-            if tup[1][-1:] == 'd':
-                newLemma = tagger_de.analyze(tup[1][:-1])
-            else:
-                newLemma = tagger_de.analyze(tup[1])
+            elif tup[2] == 'ADJA' and ((tup[1][-2:] in adjEndings) or (tup[1][-1:] == 'e') or (tup[1][-1:] == 'd')):
+                if tup[1][-1:] == 'd':
+                    newLemma = tagger_de.analyze(tup[1][:-1])
+                else:
+                    newLemma = tagger_de.analyze(tup[1])
     #5: if the word is a particple with an adjective ending, but not a vocab word, color it red
-            if newLemma[1] not in wordBank:
+                if newLemma[1] not in wordBank:
+                    temp = re.subn(r'\b'+tup[0]+r'\b', formattedRed(tup[0]), formattedText)
+                    formattedText = temp[0]
+                    numerator -= temp[1]
+    #6: otherwise, check if the lemma is in the core vocabulary. If not, color red
+            else:
                 temp = re.subn(r'\b'+tup[0]+r'\b', formattedRed(tup[0]), formattedText)
                 formattedText = temp[0]
                 numerator -= temp[1]
-    #6: otherwise, check if the lemma is in the core vocabulary. If not, color red
-        elif tup[1] not in wordBank:
-            temp = re.subn(r'\b'+tup[0]+r'\b', formattedRed(tup[0]), formattedText)
-            formattedText = temp[0]
-            numerator -= temp[1]
     #-----PREPARE THE DATA FOR THE HTML PAGE------------------------------------------------------
     formattedText = re.sub('\n', "<br>", formattedText)     # preserve line breaks in HTML code
     outDict['Readability'] = str("%s/%s = %s" % (numerator,denominator,(numerator/denominator*100)))
