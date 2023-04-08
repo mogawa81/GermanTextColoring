@@ -87,9 +87,10 @@ def readability(wordBank, text):
             elif (tup[2] == 'ADJA' or tup[2] == 'ADJ(A)') and ((tup[1][-2:] in adjEndings) or (tup[1][-1:] == 'e') or (tup[1][-1:] == 'd')):
                 if tup[1][-1:] == 'd':
                     newLemma = tagger_de.analyze(tup[1][:-1])
+                    print("Adjective Ending: ",newLemma)
                 else:
                     newLemma = tagger_de.analyze(tup[1])
-                    #print(newLemma)
+                    print("Adjective Ending: ",newLemma)
     #5: if the word is a particple with an adjective ending, but not a vocab word, color it red
                 if newLemma[0] not in wordBank and newLemma[1] not in wordBank:
                     temp = re.subn(r'\b'+tup[0]+r'\b', formattedRed(tup[0]), formattedText)

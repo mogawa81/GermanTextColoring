@@ -45,10 +45,12 @@ def readability(wordBank, text):
     formattedText = str(text)   # a really long string with color codes
     #---------------PRE-PROCESSING----------------------------------------------------------
     #1: count number of words
-    denominator = len(text.split())     # total number of words
+    split = text.split()         # split by spaces
+    denominator = len(split)     # total number of words
     numerator = denominator
+    #3: remove duplicates
+    tokens = [*set(split)]
     #2: tokenize
     tokens = nltk.tokenize.word_tokenize(text)
-    #3: remove duplicates
-    tokens = [*set(tokens)]
+    
     
