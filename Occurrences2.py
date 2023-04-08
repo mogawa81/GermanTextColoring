@@ -109,7 +109,7 @@ def readability(wordBank, text):
 #FOR TESTING
 def test():
     print("in Occurences.py!")
-    wordBank = {"meinen", "Name", "Abend"}
+    wordBank = {"meinen", "Name", "Abend", "gut"}
     print("compiled words!")
     f = open("sample3.txt", 'r')
     f = f.read()
