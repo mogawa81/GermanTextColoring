@@ -89,6 +89,7 @@ def readability(wordBank, text):
                     newLemma = tagger_de.analyze(tup[1][:-1])
                 else:
                     newLemma = tagger_de.analyze(tup[1])
+                    print(newLemma)
     #5: if the word is a particple with an adjective ending, but not a vocab word, color it red
                 if newLemma[1] not in wordBank:
                     temp = re.subn(r'\b'+tup[0]+r'\b', formattedRed(tup[0]), formattedText)
