@@ -2,20 +2,24 @@ from nltk.stem.snowball import GermanStemmer
 from compound_split import char_split
 import string
 from HanTa import HanoverTagger as ht
+import nltk
 
 st = GermanStemmer()
 token = "vergangenen"
 #print(st.stem(token))
 
 tagger_de = ht.HanoverTagger('morphmodel_ger.pgz')
-# print("1",tagger_de.analyze('Geplanten'))
-# print("2",tagger_de.analyze('gefunden'))
+print("1",tagger_de.analyze('Deutschland'))
+f = open("sample3.txt", 'r')
+f = f.read()
+tokens = nltk.word_tokenize(f)
+print("2",tagger_de.tag_sent(tokens))
 # print("3",tagger_de.analyze('vergangen'))
 # print("3",tagger_de.analyze('vergangene'))
 
 from nltk.corpus import stopwords
 stopWords = set(stopwords.words('german'))
-print(stopWords)
+# print(stopWords)
 
 # if they have 'to' in database, then it's a verb and can have a d at the end
 

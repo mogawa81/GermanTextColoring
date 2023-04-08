@@ -38,11 +38,10 @@ def compileWords(num):
     return wordBank
 
 # Lines 41-45 were copied from https://stackoverflow.com/questions/57857240/ho-to-do-lemmatization-on-german-text
-def lemmatize(words):
-    mails_lemma = []
+def lemmatize(tokens):
     tagger = ht.HanoverTagger("morphmodel_ger.pgz")
-    mails_lemma = [lemma for (word, lemma, pos) in tagger.tag_sent(words)]
-    return mails_lemma
+    analysis = tagger.tag_sent(tokens)
+    return analysis
         
 def extractProperNouns(words):
     tagger = ht.HanoverTagger('morphmodel_ger.pgz')

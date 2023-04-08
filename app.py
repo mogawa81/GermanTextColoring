@@ -1,4 +1,4 @@
-from Occurrences import compileWords, readability
+from Occurrences2 import compileWords, readability
 #from analyze_out import write_to_template
 #import sqlite3
 from flask import Flask, render_template, request, url_for, flash, redirect, abort, Blueprint
@@ -297,10 +297,10 @@ def analyze():
         else:
             print("compiling words...")
             wordBank = compileWords(chapters)
-            print("calculating readability...")
+            print("analyzing...")
             foundWords = readability(wordBank, text)
             print("rendering template...")
-            return render_template('analyze_out.html', readability=foundWords["Readability"], properNouns=foundWords["Proper Nouns"], text=foundWords["Text"])   
+            return render_template('analyze_out.html', readability=foundWords["Readability"], text=foundWords["Text"])   
     return render_template('analyze.html')
 
 if __name__ == '__main__':
