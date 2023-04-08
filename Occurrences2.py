@@ -24,7 +24,7 @@ def compileWords(num):
     for row in vocabList:
         #unpack table name, which is a tuple, into a string
         str_word = row[0]
-        str_word = str_word.lower()
+        str_word = str_word #.lower()
         wordBank[str_word] = None
         conn.commit()         
     conn.close()
@@ -109,11 +109,11 @@ def readability(wordBank, text):
 #FOR TESTING
 def test():
     print("in Occurences.py!")
-    wordBank = {"meinen", "Name"}
+    wordBank = {"meinen", "Name", "Abend"}
     print("compiled words!")
     f = open("sample3.txt", 'r')
     f = f.read()
     foundWords = readability(wordBank, f)
     print(foundWords["Text"], foundWords["Readability"])
 
-#test()
+test()
