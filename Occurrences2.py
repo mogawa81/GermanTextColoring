@@ -91,7 +91,7 @@ def readability(wordBank, text):
                     newLemma = tagger_de.analyze(tup[1])
                     #print(newLemma)
     #5: if the word is a particple with an adjective ending, but not a vocab word, color it red
-                if newLemma[1] not in wordBank:
+                if newLemma[0] not in wordBank and newLemma[1] not in wordBank:
                     temp = re.subn(r'\b'+tup[0]+r'\b', formattedRed(tup[0]), formattedText)
                     formattedText = temp[0]
                     numerator -= temp[1]
@@ -110,11 +110,11 @@ def readability(wordBank, text):
 #FOR TESTING
 def test():
     print("in Occurences.py!")
-    wordBank = {"meinen", "Name", "Abend", "gut"}
+    wordBank = {"meinen", "Name", "Abend", "gut", "vergehen"}
     print("compiled words!")
     f = open("sample3.txt", 'r')
     f = f.read()
     foundWords = readability(wordBank, f)
     print(foundWords["Text"], foundWords["Readability"])
 
-#test()
+test()
