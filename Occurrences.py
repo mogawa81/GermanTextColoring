@@ -37,12 +37,10 @@ def compileWords(num):
     conn.close()
     return wordBank
 
+# Lines 41-45 were copied from https://stackoverflow.com/questions/57857240/ho-to-do-lemmatization-on-german-text
 def lemmatize(words):
     mails_lemma = []
     tagger = ht.HanoverTagger("morphmodel_ger.pgz")
-    #for mail in line.split():
-        #lemma = [lemma for (word,lemma,pos) in tagger.tag_sent(mail.split())]
-        #mails_lemma.append(' '.join(lemma))
     mails_lemma = [lemma for (word, lemma, pos) in tagger.tag_sent(words)]
     return mails_lemma
         
@@ -117,10 +115,10 @@ def readability(wordBank, text):
                 # add the word to the new dict under the lemma list
                 foundLemmas[lemma] = [word]
             # if it starts with the prefix ge- then remove it manually and check if it's a lemma
-            elif lemma[:2] == 'ge':
+            elif lemma[:2] == 'ge': 
                 newLemma = lemmatize(lemma[2:])[0].lower()
             # if it ends with -tet suffix, remove and re-analyze
-            elif lemma[-3:] == 'tet':
+            elif lemma[-2:] == 'en':
                 newLemma = lemmatize(lemma[:-3])[0].lower()
             # -test
             elif lemma[-4:] == 'test':
