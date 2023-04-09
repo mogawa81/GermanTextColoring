@@ -6,6 +6,7 @@ import re
 import nltk
 nltk.download('stopwords')
 from nltk.corpus import stopwords
+from collections import OrderedDict
 #from compound_split import char_split
 
 def compileWords(num):
@@ -68,9 +69,10 @@ def stripAdj(token):
 
 def cornerCase(token, wordBank, formattedText, numerator):
     # if the token is not in the wordBank in upper or lowercase, color red
-    if (token not in wordBank) and (token.lower() not in wordBank):
-        formattedText, num = re.subn(r'\b'+token+r'\b', formattedRed(token), formattedText)
-        numerator = numerator - num
+    print("wha", str(token.lower()))
+    if (token not in wordBank) and (str(token.lower()) not in wordBank):
+        formattedText = re.sub(r'\b'+token+r'\b', formattedRed(token), formattedText)
+        numerator = numerator - 1
     return formattedText, numerator
 
 def specialChars(text):
@@ -97,18 +99,16 @@ def readability(wordBank, text):
     tokens = unpunctuate(text)
     #3: tokenize
     tokens = nltk.tokenize.word_tokenize(text)
-    #4: remove duplicates
-    tokens = list(set(tokens))
+    print(tokens)
     #----------------ANALYSIS--------------------------------------------------------------------------
     prev = "."      # the first token is a corner case
     stopWords = set(stopwords.words('german'))
     for token in tokens:
     #0: If it's punctuation, skip
         if token == "." or token == "!":
-            prev = token
+            pass
     #1: if stopword, continue
         elif (token in stopWords) or (token.lower() in stopWords):
-            prev = token
             numerator = numerator - 1
     #2: If it's a compound word, see if both words are vocab words
         # array = (char_split.split_compound(token))
@@ -121,8 +121,8 @@ def readability(wordBank, text):
             formattedText, numerator = cornerCase(token, wordBank, formattedText, numerator)
     #4: Otherwise, color it red if the token nor its non-adjective form are in the wordbank
         elif (token not in wordBank) and (stripAdj(token) not in wordBank):
-            formattedText, num = re.subn(r'\b'+token+r'\b', formattedRed(token), formattedText)
-            numerator = numerator - num
+            formattedText = re.sub(r'\b'+token+r'\b', formattedRed(token), formattedText)
+            numerator = numerator - 1
         prev = token
     #-----PREPARE THE DATA FOR THE HTML PAGE------------------------------------------------------
     formattedText = re.sub('\n', "<br>", formattedText)     # preserve line breaks in HTML code
@@ -137,7 +137,7 @@ def readability(wordBank, text):
                 
 #FOR TESTING
 def test():
-    wordBank = {"vergangen"}
+    wordBank = {"vergangen", 'eigentlich'}
     f = open("sample3.txt", 'r')
     f = f.read()
     foundWords = readability(wordBank, f)

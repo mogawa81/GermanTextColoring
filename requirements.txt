@@ -4,4 +4,5 @@ nltk
 HanTa
 numpy
 gunicorn
+collections
 #compound-split>=1.0.2
