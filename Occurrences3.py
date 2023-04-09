@@ -6,7 +6,6 @@ import re
 import nltk
 nltk.download('stopwords')
 from nltk.corpus import stopwords
-from collections import OrderedDict
 #from compound_split import char_split
 
 def compileWords(num):
