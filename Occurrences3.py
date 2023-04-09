@@ -89,6 +89,9 @@ def readability(wordBank, text):
     #----------------ANALYSIS--------------------------------------------------------------------------
     prev = "."      # the first token is a corner case
     for token in tokens:
+    #0: If it's punctuation, skip!
+        if token == "." or token == "!":
+            continue
     #1: Strip any adjective endings
         print(token)
         token = stripAdj(token)
