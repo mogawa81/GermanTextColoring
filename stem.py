@@ -9,11 +9,12 @@ token = "vergangenen"
 #print(st.stem(token))
 
 tagger_de = ht.HanoverTagger('morphmodel_ger.pgz')
-print("1",tagger_de.analyze('Deutschland'))
+#print("1",tagger_de.analyze('Deutschland'))
 f = open("sample3.txt", 'r')
-f = f.read()
-tokens = nltk.word_tokenize(f)
-print("2",tagger_de.tag_sent(tokens))
+g = f.read()
+f.close()
+tokens = nltk.word_tokenize(g)
+#print("2",tagger_de.tag_sent(tokens))
 # print("3",tagger_de.analyze('vergangen'))
 # print("3",tagger_de.analyze('vergangene'))
 
@@ -34,5 +35,28 @@ for word in x:
         #print(array)
 #print(char_split.split_compound('Autobahnraststätte')[0][1:])
 #print(char_split.split_compound('reise')[0][0])
+
+f = open("sample3.txt", 'r')
+g = f.read()
+f.close()
+f = open("sample4.txt",'w')
+for line in g.splitlines():
+    if line == '':
+        continue
+    else:
+        for word in line.split(" "):
+            f.write(word+"\n")
+f.close()
+
+f = open("sample5.txt", 'r')
+g = f.readlines()
+f.close()
+tokens = []
+for line in g:
+    tokens.append(line)
+f = open("sample6.txt",'w')
+tokens = [*set(tokens)]
+for word in tokens:
+    f.write(word)
 
 
