@@ -94,10 +94,11 @@ def readability(wordBank, text):
     numerator = denominator
     #2: remove punctuation except -, ., !
     tokens = unpunctuate(text)
-    #3: remove duplicates
-    tokens = [*set(tokens)]
+  
     #4: tokenize
     tokens = nltk.tokenize.word_tokenize(text)
+    #4: remove duplicates
+    tokens = list(set(tokens))
     #----------------ANALYSIS--------------------------------------------------------------------------
     prev = "."      # the first token is a corner case
     for token in tokens:
@@ -128,5 +129,5 @@ def test():
     foundWords = readability(wordBank, f)
     print(foundWords["Text"], foundWords["Readability"])
 
-#test() 
+test() 
     
