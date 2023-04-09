@@ -5,4 +5,3 @@ HanTa
 numpy
 gunicorn
 CharSplit
-git+ssh://git@github.com/dtuggener/CharSplit
