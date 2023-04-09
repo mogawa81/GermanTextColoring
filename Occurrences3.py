@@ -66,12 +66,11 @@ def stripAdj(token):
     else:
         return token
 
-def cornerCase(token, wordBank, formattedText, numerator):
-    # if the token is not in the wordBank in upper or lowercase, color red
-    print("wha", str(token.lower()))
-    if (token not in wordBank) and (str(token.lower()) not in wordBank):
-        formattedText = re.sub(r'\b'+token+r'\b', formattedRed(token), formattedText)
-        numerator = numerator - 1
+def stopword(token, formattedText, numerator):
+    stopWords = set(stopwords.words('german'))
+    if (token not in stopWords) and (token.lower() not in stopWords) and (stripAdj(token) not in stopWords) and (stripAdj(token).lower() not in stopWords):
+                formattedText = re.sub(r'\b'+token+r'\b', formattedRed(token), formattedText)
+                numerator = numerator - 1
     return formattedText, numerator
 
 def specialChars(text):
@@ -101,27 +100,24 @@ def readability(wordBank, text):
     print(tokens)
     #----------------ANALYSIS--------------------------------------------------------------------------
     prev = "."      # the first token is a corner case
-    stopWords = set(stopwords.words('german'))
     for token in tokens:
     #0: If it's punctuation, skip
         if token == "." or token == "!":
             pass
-    #1: if stopword, continue
-        elif (token in stopWords) or (token.lower() in stopWords):
-            numerator = numerator - 1
-    #2: If it's a compound word, see if both words are vocab words
+    #1: If it's a compound word, see if both words are vocab words
         # array = (char_split.split_compound(token))
         # if (array[0][0] >= 0.6) and (array[0][1] in wordBank) and (array[0][2] in wordBank):
         #     continue
         # if (array[0][0] >= 0.6) and (array[0][1].lower() in wordBank) and (array[0][2] in wordBank):
         #     continue            
-    #3: If it's at the start of a sentence, treat it as a corner case
+    #2: If it's at the start of a sentence, check if it's in the word bank in upper and lowercase in addition to its stripped forms
         elif prev == "." or prev == "!":
-            formattedText, numerator = cornerCase(token, wordBank, formattedText, numerator)
-    #4: Otherwise, color it red if the token nor its non-adjective form are in the wordbank
+            if (stripAdj(token.lower()) not in wordBank) and (str(token.lower()) not in wordBank) and (token not in wordBank) and (token.lower() not in wordBank):
+                formattedText, numerator = stopword(token, formattedText, numerator)
+    #3: If it is not a special case, and the token or its stripped form is not in the wordbank, color red
         elif (token not in wordBank) and (stripAdj(token) not in wordBank):
-            formattedText = re.sub(r'\b'+token+r'\b', formattedRed(token), formattedText)
-            numerator = numerator - 1
+    #4: If the token is a stopword, also leave it alone. Otherwise, color red
+            formattedText, numerator = stopword(token, formattedText, numerator)            
         prev = token
     #-----PREPARE THE DATA FOR THE HTML PAGE------------------------------------------------------
     formattedText = re.sub('\n', "<br>", formattedText)     # preserve line breaks in HTML code
