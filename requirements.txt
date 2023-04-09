@@ -4,4 +4,4 @@ nltk
 HanTa
 numpy
 gunicorn
-CharSplit
+git+https://github.com/dtuggener/CharSplit
