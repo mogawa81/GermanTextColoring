@@ -105,12 +105,16 @@ def readability(wordBank, text):
     for token in tokens:
     #0: If it's punctuation, skip
         if token == "." or token == "!":
+            prev = token
             continue
     #1: if stopword, continue
-        if (prev == ".") or (prev == "!") and (token.lower() in stopWords):
+        if ((prev == ".") or (prev == "!")) and ((token.lower() in stopWords) or (token in stopWords)):
+            numerator = numerator - 1
+            prev = token
             continue
-        if token in stopWords:
-            denominator = denominator - 1
+        elif token in stopWords:
+            prev = token
+            numerator = numerator - 1
             continue
     #2: Strip any adjective endings
         token = stripAdj(token)
@@ -127,10 +131,17 @@ def readability(wordBank, text):
         elif token not in wordBank:
             formattedText, num = re.subn(r'\b'+token+r'\b', formattedRed(token), formattedText)
             numerator = numerator - num
+        prev = token
     #-----PREPARE THE DATA FOR THE HTML PAGE------------------------------------------------------
     formattedText = re.sub('\n', "<br>", formattedText)     # preserve line breaks in HTML code
-    outDict['Readability'] = str("%s/%s = %s" % (numerator,denominator,(numerator/denominator*100)))
+    score = 0
+    if denominator != 0:
+        score = numerator/denominator*100
+    else:
+        numerator = denominator
+    outDict['Readability'] = str("%s/%s = %s" % (numerator,denominator,score))
     outDict["Text"] = formattedText
+    #print(stopWords)
     return outDict
                 
 #FOR TESTING
@@ -141,5 +152,5 @@ def test():
     foundWords = readability(wordBank, f)
     print(foundWords["Text"], foundWords["Readability"])
 
-#test() 
+test() 
     
