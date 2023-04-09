@@ -66,10 +66,10 @@ def stripAdj(token):
     else:
         return token
 
-def cornerCase(token, wordBank, formattedText, numerator, original):
+def cornerCase(token, wordBank, formattedText, numerator):
     # if the token is not in the wordBank in upper or lowercase, color red
     if (token not in wordBank) and (token.lower() not in wordBank):
-        formattedText, num = re.subn(r'\b'+original+r'\b', formattedRed(original), formattedText)
+        formattedText, num = re.subn(r'\b'+token+r'\b', formattedRed(token), formattedText)
         numerator = numerator - num
     return formattedText, numerator
 
@@ -106,7 +106,7 @@ def readability(wordBank, text):
         if token == "." or token == "!":
             continue
     #1: Strip any adjective endings
-        strip = stripAdj(token)
+        token = stripAdj(token)
     #3: If it's a compound word, see if both words are vocab words
         # array = (char_split.split_compound("ReiseGruppen"))
         # if (array[0][0] >= 0.6) and (array[0][1] in wordBank) and (array[0][2] in wordBank):
@@ -115,7 +115,7 @@ def readability(wordBank, text):
         #     continue            
     #4: If it's at the start of a sentence, treat it as a corner case
         if prev == "." or prev == "!":
-            formattedText, numerator = cornerCase(strip, wordBank, formattedText, numerator, token)
+            formattedText, numerator = cornerCase(token, wordBank, formattedText, numerator)
     #5: Otherwise, color it red if the token is not in the wordbank
         elif token not in wordBank:
             formattedText, num = re.subn(r'\b'+token+r'\b', formattedRed(token), formattedText)
