@@ -68,8 +68,8 @@ def stripAdj(token):
 def cornerCase(token, wordBank, formattedText, numerator):
     # if the token is not in the wordBank in upper or lowercase, color red
     if (token not in wordBank) and (token.lower() not in wordBank):
-            formattedText = re.sub(r'\b'+token+r'\b', formattedRed(token), formattedText)
-            numerator -= 1
+            formattedText, num = re.subn(r'\b'+token+r'\b', formattedRed(token), formattedText)
+            numerator = numerator - num
     return formattedText, numerator
 
 def specialChars(text):
@@ -111,8 +111,8 @@ def readability(wordBank, text):
             formattedText, numerator = cornerCase(token, wordBank, formattedText, numerator)
     #3: Otherwise, color it red if the token is not in the wordbank
         elif token not in wordBank:
-            formattedText = re.sub(r'\b'+token+r'\b', formattedRed(token), formattedText)
-            numerator -= 1
+            formattedText, num = re.subn(r'\b'+token+r'\b', formattedRed(token), formattedText)
+            numerator = numerator - num
     #-----PREPARE THE DATA FOR THE HTML PAGE------------------------------------------------------
     formattedText = re.sub('\n', "<br>", formattedText)     # preserve line breaks in HTML code
     outDict['Readability'] = str("%s/%s = %s" % (numerator,denominator,(numerator/denominator*100)))
@@ -127,5 +127,5 @@ def test():
     foundWords = readability(wordBank, f)
     print(foundWords["Text"], foundWords["Readability"])
 
-#test() 
+test() 
     
