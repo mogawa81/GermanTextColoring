@@ -77,7 +77,7 @@ def specialChars(text):
     text = text.replace(")",'~')
     text = text.replace("<",'~')
     text = text.replace(">",'~')
-    text = text.replace("•", "~")
+    text = text.replace("•", "")
     return text
 
 def readability(wordBank, text):
@@ -102,7 +102,7 @@ def readability(wordBank, text):
         if token == "." or token == "!":
             continue
     #1: Strip any adjective endings
-        print(token)
+        #print(token)
         token = stripAdj(token)
     #2: If it's at the start of a sentence, treat it as a corner case
         if prev == "." or prev == "!":
