@@ -52,14 +52,14 @@ def stripAdj(token):
     #1: Check for adjective endings
     if ((token[-2:] in adjEndings) or (token[-1:] == 'e')):
     #2: if it is a verb, it will have a -d. Strip.
-        if (token[-3] == 'd'):
+        if (len(token) > 3) and (token[-3] == 'd'):
             return token[:-3]
-        elif (token[-2] == 'd'):
+        elif (len(token) > 2) and (token[-2] == 'd'):
             return token[:-2]
     #3: if it is an adjective, strip the ending
-    if token[-2:] in adjEndings:
+    if (len(token) > 2) and (token[-2:] in adjEndings):
         return token[:-2]
-    elif token[-1:] == 'e':
+    elif (len(token) > 1) and (token[-1:] == 'e'):
         return token[:-1]
     #4: otherwise, return the token as is
     else:
