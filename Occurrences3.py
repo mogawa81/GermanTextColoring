@@ -106,10 +106,13 @@ def readability(wordBank, text):
     #0: If it's punctuation, skip
         if token == "." or token == "!":
             continue
+    #1: if stopword, continue
+        if (prev == ".") or (prev == "!") and (token.lower() in stopWords):
+            continue
         if token in stopWords:
             denominator = denominator - 1
             continue
-    #1: Strip any adjective endings
+    #2: Strip any adjective endings
         token = stripAdj(token)
     #3: If it's a compound word, see if both words are vocab words
         # array = (char_split.split_compound(token))
