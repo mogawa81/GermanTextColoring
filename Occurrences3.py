@@ -103,21 +103,14 @@ def readability(wordBank, text):
     prev = "."      # the first token is a corner case
     stopWords = set(stopwords.words('german'))
     for token in tokens:
+        strip = stripAdj(token)
     #0: If it's punctuation, skip
         if token == "." or token == "!":
             prev = token
-            continue
     #1: if stopword, continue
-        if ((prev == ".") or (prev == "!")) and ((token.lower() in stopWords) or (token in stopWords)):
-            numerator = numerator - 1
-            prev = token
-            continue
-        elif token in stopWords:
+        elif (token in stopWords) or (token.lower() in stopWords):
             prev = token
             numerator = numerator - 1
-            continue
-    #2: Strip any adjective endings
-        token = stripAdj(token)
     #3: If it's a compound word, see if both words are vocab words
         # array = (char_split.split_compound(token))
         # if (array[0][0] >= 0.6) and (array[0][1] in wordBank) and (array[0][2] in wordBank):
@@ -125,7 +118,7 @@ def readability(wordBank, text):
         # if (array[0][0] >= 0.6) and (array[0][1].lower() in wordBank) and (array[0][2] in wordBank):
         #     continue            
     #4: If it's at the start of a sentence, treat it as a corner case
-        if prev == "." or prev == "!":
+        elif prev == "." or prev == "!":
             formattedText, numerator = cornerCase(token, wordBank, formattedText, numerator)
     #5: Otherwise, color it red if the token is not in the wordbank
         elif token not in wordBank:
@@ -141,7 +134,6 @@ def readability(wordBank, text):
         numerator = denominator
     outDict['Readability'] = str("%s/%s = %s" % (numerator,denominator,score))
     outDict["Text"] = formattedText
-    #print(stopWords)
     return outDict
                 
 #FOR TESTING
@@ -152,5 +144,5 @@ def test():
     foundWords = readability(wordBank, f)
     print(foundWords["Text"], foundWords["Readability"])
 
-#test() 
+test() 
     
