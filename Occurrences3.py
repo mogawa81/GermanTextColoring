@@ -6,7 +6,7 @@ import re
 import nltk
 nltk.download('stopwords')
 from nltk.corpus import stopwords
-#from compound_split import char_split
+from compound_split import char_split
 
 def compileWords(num):
     DATABASE_URL = os.environ.get('DATABASE_URL')
@@ -112,7 +112,7 @@ def readability(wordBank, text):
     #1: Strip any adjective endings
         token = stripAdj(token)
     #3: If it's a compound word, see if both words are vocab words
-        # array = (char_split.split_compound("ReiseGruppen"))
+        # array = (char_split.split_compound(token))
         # if (array[0][0] >= 0.6) and (array[0][1] in wordBank) and (array[0][2] in wordBank):
         #     continue
         # if (array[0][0] >= 0.6) and (array[0][1].lower() in wordBank) and (array[0][2] in wordBank):
