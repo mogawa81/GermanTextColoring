@@ -4,4 +4,5 @@ nltk
 HanTa
 numpy
 gunicorn
-compound-split
+CharSplit
+git+ssh://git@github.com/dtuggener/CharSplit
