@@ -73,6 +73,8 @@ def cornerCase(token, wordBank, formattedText, numerator):
     return formattedText, numerator
 
 def readability(wordBank, text):
+    text = text.replace("(",'<')
+    text = text.replace(")",'>')
     #dict returning readability, proper nouns, html formatted text
     outDict = {"Readability":0, "Text": ""} 
     formattedText = str(text)   # a really long string with color codes
@@ -116,5 +118,5 @@ def test():
     foundWords = readability(wordBank, f)
     print(foundWords["Text"], foundWords["Readability"])
 
-#test() 
+test() 
     
