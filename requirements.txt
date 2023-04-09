@@ -4,4 +4,4 @@ nltk
 HanTa
 numpy
 gunicorn
-git+https://github.com/JoelNiklaus/CompoundSplit
+compound-split
