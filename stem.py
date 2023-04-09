@@ -31,8 +31,7 @@ x = test_str.split()
 for word in x:
     array = (char_split.split_compound(word)[0][0:])
     if array[0] >= 0.6:
-        continue
-        #print(array)
+        print(array)
 #print(char_split.split_compound('Autobahnraststätte')[0][1:])
 #print(char_split.split_compound('reise')[0][0])
 

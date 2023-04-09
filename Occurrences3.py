@@ -6,6 +6,7 @@ import re
 import nltk
 nltk.download('stopwords')
 from nltk.corpus import stopwords
+from compound_split import char_split
 
 def compileWords(num):
     DATABASE_URL = os.environ.get('DATABASE_URL')
@@ -94,20 +95,24 @@ def readability(wordBank, text):
     numerator = denominator
     #2: remove punctuation except -, ., !
     tokens = unpunctuate(text)
-  
-    #4: tokenize
+    #3: tokenize
     tokens = nltk.tokenize.word_tokenize(text)
     #4: remove duplicates
     tokens = list(set(tokens))
     #----------------ANALYSIS--------------------------------------------------------------------------
     prev = "."      # the first token is a corner case
     for token in tokens:
-    #0: If it's punctuation, skip!
+    #0: If it's punctuation, skip
         if token == "." or token == "!":
             continue
     #1: Strip any adjective endings
-        #print(token)
         token = stripAdj(token)
+    #3: If it's a compound word, see if both words are vocab words
+        array = (char_split.split_compound(token)[0][0:])
+        if (array[0] >= 0.6) and (array[1] in wordBank) and (array[2] in wordBank):
+            continue
+        if (array[0] >= 0.6) and (array[1].lower() in wordBank) and (array[2] in wordBank):
+            continue            
     #2: If it's at the start of a sentence, treat it as a corner case
         if prev == "." or prev == "!":
             formattedText, numerator = cornerCase(token, wordBank, formattedText, numerator)
