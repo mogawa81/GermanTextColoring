@@ -103,7 +103,6 @@ def readability(wordBank, text):
     prev = "."      # the first token is a corner case
     stopWords = set(stopwords.words('german'))
     for token in tokens:
-        strip = stripAdj(token)
     #0: If it's punctuation, skip
         if token == "." or token == "!":
             prev = token
@@ -111,17 +110,17 @@ def readability(wordBank, text):
         elif (token in stopWords) or (token.lower() in stopWords):
             prev = token
             numerator = numerator - 1
-    #3: If it's a compound word, see if both words are vocab words
+    #2: If it's a compound word, see if both words are vocab words
         # array = (char_split.split_compound(token))
         # if (array[0][0] >= 0.6) and (array[0][1] in wordBank) and (array[0][2] in wordBank):
         #     continue
         # if (array[0][0] >= 0.6) and (array[0][1].lower() in wordBank) and (array[0][2] in wordBank):
         #     continue            
-    #4: If it's at the start of a sentence, treat it as a corner case
+    #3: If it's at the start of a sentence, treat it as a corner case
         elif prev == "." or prev == "!":
             formattedText, numerator = cornerCase(token, wordBank, formattedText, numerator)
-    #5: Otherwise, color it red if the token is not in the wordbank
-        elif token not in wordBank:
+    #4: Otherwise, color it red if the token nor its non-adjective form are in the wordbank
+        elif (token not in wordBank) and (stripAdj(token) not in wordBank):
             formattedText, num = re.subn(r'\b'+token+r'\b', formattedRed(token), formattedText)
             numerator = numerator - num
         prev = token
@@ -144,5 +143,5 @@ def test():
     foundWords = readability(wordBank, f)
     print(foundWords["Text"], foundWords["Readability"])
 
-test() 
+#test() 
     
