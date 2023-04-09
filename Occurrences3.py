@@ -101,9 +101,13 @@ def readability(wordBank, text):
     tokens = list(set(tokens))
     #----------------ANALYSIS--------------------------------------------------------------------------
     prev = "."      # the first token is a corner case
+    stopWords = set(stopwords.words('german'))
     for token in tokens:
     #0: If it's punctuation, skip
         if token == "." or token == "!":
+            continue
+        if token in stopWords:
+            denominator = denominator - 1
             continue
     #1: Strip any adjective endings
         token = stripAdj(token)
