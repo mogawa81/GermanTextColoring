@@ -127,5 +127,5 @@ def test():
     foundWords = readability(wordBank, f)
     print(foundWords["Text"], foundWords["Readability"])
 
-test() 
+#test() 
     
