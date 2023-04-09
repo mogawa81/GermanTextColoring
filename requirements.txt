@@ -5,3 +5,4 @@ HanTa
 numpy
 gunicorn
 git+https://github.com/dtuggener/CharSplit
+compound-split
