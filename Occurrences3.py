@@ -80,7 +80,7 @@ def specialChars(text):
     text = text.replace("•", "~")
 
 def readability(wordBank, text):
-    text = specialChars(text)
+    text = str(specialChars(text))
     #dict returning readability, proper nouns, html formatted text
     outDict = {"Readability":0, "Text": ""} 
     formattedText = str(text)   # a really long string with color codes
