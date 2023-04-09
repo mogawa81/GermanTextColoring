@@ -6,7 +6,7 @@ import re
 import nltk
 nltk.download('stopwords')
 from nltk.corpus import stopwords
-from compound_split import char_split
+#from compound_split import char_split
 
 def compileWords(num):
     DATABASE_URL = os.environ.get('DATABASE_URL')
@@ -108,11 +108,11 @@ def readability(wordBank, text):
     #1: Strip any adjective endings
         token = stripAdj(token)
     #3: If it's a compound word, see if both words are vocab words
-        array = (char_split.split_compound("ReiseGruppen"))
-        if (array[0][0] >= 0.6) and (array[0][1] in wordBank) and (array[0][2] in wordBank):
-            continue
-        if (array[0][0] >= 0.6) and (array[0][1].lower() in wordBank) and (array[0][2] in wordBank):
-            continue            
+        # array = (char_split.split_compound("ReiseGruppen"))
+        # if (array[0][0] >= 0.6) and (array[0][1] in wordBank) and (array[0][2] in wordBank):
+        #     continue
+        # if (array[0][0] >= 0.6) and (array[0][1].lower() in wordBank) and (array[0][2] in wordBank):
+        #     continue            
     #2: If it's at the start of a sentence, treat it as a corner case
         if prev == "." or prev == "!":
             formattedText, numerator = cornerCase(token, wordBank, formattedText, numerator)
