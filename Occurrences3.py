@@ -78,6 +78,7 @@ def specialChars(text):
     text = text.replace("<",'~')
     text = text.replace(">",'~')
     text = text.replace("•", "~")
+    return text
 
 def readability(wordBank, text):
     text = str(specialChars(text))
