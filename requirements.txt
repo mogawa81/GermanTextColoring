@@ -4,4 +4,4 @@ nltk
 HanTa
 numpy
 gunicorn
-compound-split>=1.0.2
+#compound-split>=1.0.2

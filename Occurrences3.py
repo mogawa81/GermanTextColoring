@@ -6,7 +6,7 @@ import re
 import nltk
 nltk.download('stopwords')
 from nltk.corpus import stopwords
-from compound_split import char_split
+#from compound_split import char_split
 
 def compileWords(num):
     DATABASE_URL = os.environ.get('DATABASE_URL')
