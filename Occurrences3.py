@@ -97,7 +97,6 @@ def readability(wordBank, text):
     tokens = unpunctuate(text)
     #3: tokenize
     tokens = nltk.tokenize.word_tokenize(text)
-    print(tokens)   # for testing
     #4: lemmatize for Proper Noun identification
     tagger_de = ht.HanoverTagger('morphmodel_ger.pgz')
     tuples = tagger_de.tag_sent(tokens)
