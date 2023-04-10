@@ -69,18 +69,14 @@ def readability2(wordBank, text):
     stopWords = set(stopwords.words('german'))
     for tup in tokens:
     #0: if it is in the vocabulary or a number, do nothing. If not...
-        if (tup[1] not in wordBank) and not (tup[1].isnumeric()):
-    #1: if the word is a Proper Noun, color all occurrences of it gray
-            if tup[2] == 'NE':
-                formattedText = re.sub(r'\b'+tup[0]+r'\b', formattedGray(tup[0]), formattedText)
-                numerator -= 1
-    #2: if the token is punctuation, continue
-            elif tup[2] == '$.':
+        if (tup[1] not in wordBank) and not (tup[1].isnumeric()):            
+    #1: if the token is punctuation, continue
+            if tup[2] == '$.':
                 continue
-    #3: if the word is a stopword, continue
+    #2: if the word is a stopword, continue
             elif tup[0] in stopWords or tup[1] in stopWords:
                 continue
-    #4: if the word has an adjective ending, check if it's a present/past participle
+    #3: if the word has an adjective ending, check if it's a present/past participle
             elif (tup[2] == 'ADJA' or tup[2] == 'ADJ(A)') and ((tup[1][-2:] in adjEndings) or (tup[1][-1:] == 'e') or (tup[1][-1:] == 'd')):
                 if tup[1][-1:] == 'd':
                     newLemma = tagger_de.analyze(tup[1][:-1])
@@ -88,10 +84,14 @@ def readability2(wordBank, text):
                 else:
                     newLemma = tagger_de.analyze(tup[1])
                     print("Adjective Ending: ",newLemma)
-    #5: if the word is a particple with an adjective ending, but not a vocab word, color it red
+    #4: if the word is a particple with an adjective ending, but not a vocab word, color it red
                 if newLemma[0] not in wordBank and newLemma[1] not in wordBank:
                     formattedText = re.sub(r'\b'+tup[0]+r'\b', formattedRed(tup[0]), formattedText)
                     numerator -= 1
+    #5: if the word is a Proper Noun, color all occurrences of it gray
+            elif tup[2] == 'NE':
+                formattedText = re.sub(r'\b'+tup[0]+r'\b', formattedGray(tup[0]), formattedText)
+                numerator -= 1
     #6: otherwise, check if the lemma is in the core vocabulary. If not, color red
             else:
                 formattedText = re.sub(r'\b'+tup[0]+r'\b', formattedRed(tup[0]), formattedText)
