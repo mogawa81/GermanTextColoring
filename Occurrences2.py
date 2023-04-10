@@ -7,7 +7,7 @@ import os
 from HanTa import HanoverTagger as ht
 import re
 
-def compileWords(num):
+def compileWords2(num):
     
     DATABASE_URL = os.environ.get('DATABASE_URL')
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
@@ -46,7 +46,7 @@ def unpunctuate(text):
     punctuation_list += "»«"
     return text.translate(str.maketrans('','',punctuation_list))
 
-def readability(wordBank, text):
+def readability2(wordBank, text):
     #dict returning readability, proper nouns, html formatted text
     outDict = {"Readability":0, "Text": ""} 
     formattedText = str(text)   # a really long string with color codes
@@ -56,9 +56,7 @@ def readability(wordBank, text):
     numerator = denominator
     #2: tokenize
     tokens = nltk.tokenize.word_tokenize(text)
-    #3: remove duplicates
-    tokens = [*set(tokens)]
-    #4: lemmatize
+    #3: lemmatize
     tagger_de = ht.HanoverTagger('morphmodel_ger.pgz')
     tokens = tagger_de.tag_sent(tokens)
     print("Analysis: ", tokens)     # for debugging purposes
@@ -74,9 +72,8 @@ def readability(wordBank, text):
         if (tup[1] not in wordBank) and not (tup[1].isnumeric()):
     #1: if the word is a Proper Noun, color all occurrences of it gray
             if tup[2] == 'NE':
-                temp = re.subn(r'\b'+tup[0]+r'\b', formattedGray(tup[0]), formattedText)
-                formattedText = temp[0]
-                numerator -= temp[1]
+                formattedText = re.sub(r'\b'+tup[0]+r'\b', formattedGray(tup[0]), formattedText)
+                numerator -= 1
     #2: if the token is punctuation, continue
             elif tup[2] == '$.':
                 continue
@@ -93,14 +90,12 @@ def readability(wordBank, text):
                     print("Adjective Ending: ",newLemma)
     #5: if the word is a particple with an adjective ending, but not a vocab word, color it red
                 if newLemma[0] not in wordBank and newLemma[1] not in wordBank:
-                    temp = re.subn(r'\b'+tup[0]+r'\b', formattedRed(tup[0]), formattedText)
-                    formattedText = temp[0]
-                    numerator -= temp[1]
+                    formattedText = re.sub(r'\b'+tup[0]+r'\b', formattedRed(tup[0]), formattedText)
+                    numerator -= 1
     #6: otherwise, check if the lemma is in the core vocabulary. If not, color red
             else:
-                temp = re.subn(r'\b'+tup[0]+r'\b', formattedRed(tup[0]), formattedText)
-                formattedText = temp[0]
-                numerator -= temp[1]
+                formattedText = re.sub(r'\b'+tup[0]+r'\b', formattedRed(tup[0]), formattedText)
+                numerator -= 1
     #-----PREPARE THE DATA FOR THE HTML PAGE------------------------------------------------------
     formattedText = re.sub('\n', "<br>", formattedText)     # preserve line breaks in HTML code
     outDict['Readability'] = str("%s/%s = %s" % (numerator,denominator,(numerator/denominator*100)))

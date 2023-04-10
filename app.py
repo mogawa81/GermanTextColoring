@@ -1,4 +1,5 @@
 from Occurrences3 import compileWords, readability
+from Occurrences2 import compileWords2, readability2
 #from analyze_out import write_to_template
 #import sqlite3
 from flask import Flask, render_template, request, url_for, flash, redirect, abort
@@ -299,6 +300,42 @@ def analyze():
             wordBank = compileWords(chapters)
             print("analyzing...")
             foundWords = readability(wordBank, text)
+            print("rendering template...")
+            return render_template('analyze_out.html', readability=foundWords["Readability"], text=foundWords["Text"])   
+    return render_template('analyze.html')
+
+# ANALYZE TEXT
+@app.route('/analyze2/', methods=('GET', 'POST'))
+def analyze():
+    if request.method == 'POST':
+        chapters = request.form["chapters"]
+        text = request.form['text']
+        if chapters == "":
+            chapters = -1
+        else:
+            l = get_db_connection()
+            conn = l[0]
+            cur = l[1]
+            cur.execute("SELECT DISTINCT lesson FROM vocabulary")
+            size = cur.fetchall()
+            count = 0
+            for lesson in size:
+                count += 1
+            print(count)
+            conn.commit()
+            conn.close()
+            #print(size)
+            if int(chapters) > count:
+                flash('The number of chapters requested exceeds chapters available.')
+                return render_template('analyze.html')
+
+        if not text:
+            flash('At least 1 word is required!')
+        else:
+            print("compiling words...")
+            wordBank = compileWords2(chapters)
+            print("analyzing...")
+            foundWords = readability2(wordBank, text)
             print("rendering template...")
             return render_template('analyze_out.html', readability=foundWords["Readability"], text=foundWords["Text"])   
     return render_template('analyze.html')
