@@ -101,22 +101,26 @@ def readability(wordBank, text):
     #----------------ANALYSIS--------------------------------------------------------------------------
     prev = "."      # the first token is a corner case
     for token in tokens:
-    #0: If it's punctuation, skip
+    #0: If it's punctuation or a number, skip
         if token == "." or token == "!":
             pass
-    #1: If it's a compound word, see if both words are vocab words
+    #1: If it's a number, decrease the numerator and skip
+        elif token.isnumeric():
+            numerator = numerator - 1
+            pass
+    #2: If it's a compound word, see if both words are vocab words
         # array = (char_split.split_compound(token))
         # if (array[0][0] >= 0.6) and (array[0][1] in wordBank) and (array[0][2] in wordBank):
         #     continue
         # if (array[0][0] >= 0.6) and (array[0][1].lower() in wordBank) and (array[0][2] in wordBank):
         #     continue            
-    #2: If it's at the start of a sentence, check if it's in the word bank in upper and lowercase in addition to its stripped forms
+    #3: If it's at the start of a sentence, check if it's in the word bank in upper and lowercase in addition to its stripped forms
         elif prev == "." or prev == "!":
             if (stripAdj(token.lower()) not in wordBank) and (str(token.lower()) not in wordBank) and (token not in wordBank) and (token.lower() not in wordBank):
                 formattedText, numerator = stopword(token, formattedText, numerator)
-    #3: If it is not a special case, and the token or its stripped form is not in the wordbank, color red
-        elif (token not in wordBank) and (stripAdj(token) not in wordBank) and not (token.isnumeric()):
-    #4: If the token is a stopword, also leave it alone. Otherwise, color red
+    #4: If it is not a special case, and the token or its stripped form is not in the wordbank, color red
+        elif (token not in wordBank) and (stripAdj(token) not in wordBank):
+    #5: If the token is a stopword, also leave it alone. Otherwise, color red
             formattedText, numerator = stopword(token, formattedText, numerator)            
         prev = token
     #-----PREPARE THE DATA FOR THE HTML PAGE------------------------------------------------------
