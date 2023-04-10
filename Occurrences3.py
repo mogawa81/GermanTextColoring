@@ -97,7 +97,11 @@ def readability(wordBank, text):
     tokens = unpunctuate(text)
     #3: tokenize
     tokens = nltk.tokenize.word_tokenize(text)
-    print(tokens)
+    print(tokens)   # for testing
+    #4: lemmatize for Proper Noun identification
+    tagger_de = ht.HanoverTagger('morphmodel_ger.pgz')
+    tuples = tagger_de.tag_sent(tokens)
+    tuplesCount = 0
     #----------------ANALYSIS--------------------------------------------------------------------------
     prev = "."      # the first token is a corner case
     for token in tokens:
@@ -120,9 +124,14 @@ def readability(wordBank, text):
                 formattedText, numerator = stopword(token, formattedText, numerator)
     #4: If it is not a special case, and the token or its stripped form is not in the wordbank, color red
         elif (token not in wordBank) and (stripAdj(token) not in wordBank):
-    #5: If the token is a stopword, also leave it alone. Otherwise, color red
-            formattedText, numerator = stopword(token, formattedText, numerator)            
+    #5: If the non-vocabulary word is a Proper Noun, color it gray
+            if tuples[tuplesCount][2] == 'NE':
+                formattedText = re.sub(r'\b'+token+r'\b', formattedGray(token), formattedText)
+    #6: If the non-vocabulary word is a stopword, leave it black. If not, color it red
+            else:
+                formattedText, numerator = stopword(token, formattedText, numerator)            
         prev = token
+        tuplesCount += 1
     #-----PREPARE THE DATA FOR THE HTML PAGE------------------------------------------------------
     formattedText = re.sub('\n', "<br>", formattedText)     # preserve line breaks in HTML code
     score = 0
