@@ -306,7 +306,7 @@ def analyze():
 
 # ANALYZE TEXT
 @app.route('/analyze2/', methods=('GET', 'POST'))
-def analyze():
+def analyze2():
     if request.method == 'POST':
         chapters = request.form["chapters"]
         text = request.form['text']
@@ -327,7 +327,7 @@ def analyze():
             #print(size)
             if int(chapters) > count:
                 flash('The number of chapters requested exceeds chapters available.')
-                return render_template('analyze.html')
+                return render_template('analyze2.html')
 
         if not text:
             flash('At least 1 word is required!')
@@ -338,7 +338,7 @@ def analyze():
             foundWords = readability2(wordBank, text)
             print("rendering template...")
             return render_template('analyze_out.html', readability=foundWords["Readability"], text=foundWords["Text"])   
-    return render_template('analyze.html')
+    return render_template('analyze2.html')
 
 if __name__ == '__main__':
     app.run(debug = True)
