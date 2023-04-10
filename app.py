@@ -1,7 +1,7 @@
 from Occurrences3 import compileWords, readability
 #from analyze_out import write_to_template
 #import sqlite3
-from flask import Flask, render_template, request, url_for, flash, redirect, abort, Blueprint
+from flask import Flask, render_template, request, url_for, flash, redirect, abort
 import string
 import random
 import psycopg2

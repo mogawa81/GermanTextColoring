@@ -70,8 +70,8 @@ def readability(wordBank, text):
     adjEndings = ['es', 'en', 'em', 'er']
     stopWords = set(stopwords.words('german'))
     for tup in tokens:
-    #0: if it is in the vocabulary, do nothing. If not...
-        if tup[1] not in wordBank:
+    #0: if it is in the vocabulary or a number, do nothing. If not...
+        if (tup[1] not in wordBank) and not (tup[1].isnumeric()):
     #1: if the word is a Proper Noun, color all occurrences of it gray
             if tup[2] == 'NE':
                 temp = re.subn(r'\b'+tup[0]+r'\b', formattedGray(tup[0]), formattedText)

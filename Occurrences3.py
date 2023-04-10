@@ -115,7 +115,7 @@ def readability(wordBank, text):
             if (stripAdj(token.lower()) not in wordBank) and (str(token.lower()) not in wordBank) and (token not in wordBank) and (token.lower() not in wordBank):
                 formattedText, numerator = stopword(token, formattedText, numerator)
     #3: If it is not a special case, and the token or its stripped form is not in the wordbank, color red
-        elif (token not in wordBank) and (stripAdj(token) not in wordBank):
+        elif (token not in wordBank) and (stripAdj(token) not in wordBank) and not (token.isnumeric()):
     #4: If the token is a stopword, also leave it alone. Otherwise, color red
             formattedText, numerator = stopword(token, formattedText, numerator)            
         prev = token
