@@ -126,10 +126,7 @@ def readability(wordBank, text):
     #5: If the non-vocabulary word is a Proper Noun, color it gray
             if tuples[tuplesCount][2] == 'NE':
                 numerator = numerator - 1
-                formattedText = re.sub(r'\b'+token+r'\b', formattedGray(token), formattedText)
-    #6: If the non-vocabulary word is a stopword, leave it black. If not, color it red
-            else:
-                formattedText, numerator = stopword(token, formattedText, numerator)            
+                formattedText = re.sub(r'\b'+token+r'\b', formattedGray(token), formattedText)           
         prev = token
         tuplesCount += 1
     #-----PREPARE THE DATA FOR THE HTML PAGE------------------------------------------------------

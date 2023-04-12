@@ -110,7 +110,7 @@ def test():
     print("compiled words!")
     f = open("sample3.txt", 'r')
     f = f.read()
-    foundWords = readability(wordBank, f)
+    foundWords = readability2(wordBank, f)
     print(foundWords["Text"], foundWords["Readability"])
 
 #test()
