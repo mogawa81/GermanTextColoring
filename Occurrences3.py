@@ -121,12 +121,16 @@ def readability(wordBank, text):
         elif prev == "." or prev == "!":
             if (stripAdj(token.lower()) not in wordBank) and (str(token.lower()) not in wordBank) and (token not in wordBank) and (token.lower() not in wordBank):
                 formattedText, numerator = stopword(token, formattedText, numerator)
-    #4: If it is not a special case, and the token or its stripped form is not in the wordbank, color red
+    #4: If it is not a special case, and the token or its stripped form is not in the wordbank, color
         elif (token not in wordBank) and (stripAdj(token) not in wordBank):
     #5: If the non-vocabulary word is a Proper Noun, color it gray
             if tuples[tuplesCount][2] == 'NE':
                 numerator = numerator - 1
-                formattedText = re.sub(r'\b'+token+r'\b', formattedGray(token), formattedText)           
+                formattedText = re.sub(r'\b'+token+r'\b', formattedGray(token), formattedText)
+    #6: otherwise, color red
+            else:
+                formattedText = re.sub(r'\b'+token+r'\b', formattedRed(token), formattedText)
+                numerator = numerator - 1            
         prev = token
         tuplesCount += 1
     #-----PREPARE THE DATA FOR THE HTML PAGE------------------------------------------------------
