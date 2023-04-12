@@ -105,10 +105,8 @@ def readability(wordBank, text):
     prev = "."      # the first token is a corner case
     for token in tokens:
     #0: If it's punctuation or a number, skip. Don't count : or ; 
-        if token == "." or token == "!":
+        if token == "." or token == "!" or token == ":":
             pass
-        elif token == ":" or token == ";":
-            continue
     #1: If it's a number, decrease the numerator and skip
         elif token.isnumeric():
             numerator = numerator - 1
@@ -120,7 +118,7 @@ def readability(wordBank, text):
         # if (array[0][0] >= 0.6) and (array[0][1].lower() in wordBank) and (array[0][2] in wordBank):
         #     continue            
     #3: If it's at the start of a sentence, check if it's in the word bank in upper and lowercase in addition to its stripped forms
-        elif prev == "." or prev == "!":
+        elif prev == "." or prev == "!" or prev == ":":
             if (stripAdj(token.lower()) not in wordBank) and (str(token.lower()) not in wordBank) and (token not in wordBank) and (token.lower() not in wordBank):
                 formattedText, numerator = stopword(token, formattedText, numerator)
     #4: If it is not a special case, and the token or its stripped form is not in the wordbank, color
