@@ -104,9 +104,11 @@ def readability(wordBank, text):
     #----------------ANALYSIS--------------------------------------------------------------------------
     prev = "."      # the first token is a corner case
     for token in tokens:
-    #0: If it's punctuation or a number, skip
+    #0: If it's punctuation or a number, skip. Don't count : or ; 
         if token == "." or token == "!":
             pass
+        elif token == ":" or token == ";":
+            continue
     #1: If it's a number, decrease the numerator and skip
         elif token.isnumeric():
             numerator = numerator - 1
@@ -146,7 +148,7 @@ def readability(wordBank, text):
                 
 #FOR TESTING
 def test():
-    wordBank = {"vergangen", 'eigentlich'}
+    wordBank = {"meine", 'eigentlich'}
     f = open("sample3.txt", 'r')
     f = f.read()
     foundWords = readability(wordBank, f)
