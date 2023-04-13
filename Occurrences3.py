@@ -130,7 +130,8 @@ def readability(wordBank, text):
     #6: otherwise, color red
             else:
                 formattedText = re.sub(r'\b'+token+r'\b', formattedRed(token), formattedText)
-                numerator = numerator - 1            
+                numerator = numerator - 1 
+                print(token, "können")           
         prev = token
         tuplesCount += 1
     #-----PREPARE THE DATA FOR THE HTML PAGE------------------------------------------------------
@@ -146,11 +147,11 @@ def readability(wordBank, text):
                 
 #FOR TESTING
 def test():
-    wordBank = {"meine", 'eigentlich'}
+    wordBank = {"meine", 'können'}
     f = open("sample3.txt", 'r')
     f = f.read()
     foundWords = readability(wordBank, f)
     print(foundWords["Text"], foundWords["Readability"])
-
+    print(wordBank)
 #test() 
     
