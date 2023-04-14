@@ -130,8 +130,7 @@ def readability(wordBank, text):
     #6: otherwise, color red
             else:
                 formattedText = re.sub(r'\b'+token+r'\b', formattedRed(token), formattedText)
-                numerator = numerator - 1 
-                print(token, "können")           
+                numerator = numerator - 1           
         prev = token
         tuplesCount += 1
     #-----PREPARE THE DATA FOR THE HTML PAGE------------------------------------------------------
