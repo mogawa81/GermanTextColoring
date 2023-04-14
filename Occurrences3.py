@@ -100,7 +100,9 @@ def readability(wordBank, text):
     #4: lemmatize for Proper Noun identification
     tagger_de = ht.HanoverTagger('morphmodel_ger.pgz')
     tuples = tagger_de.tag_sent(tokens)
-    tuplesCount = 0
+    tupDict = {}
+    for tup in tuples:
+        tupDict[tup[0]] = tup[2]
     #----------------ANALYSIS--------------------------------------------------------------------------
     prev = "."      # the first token is a corner case
     for token in tokens:
@@ -123,8 +125,8 @@ def readability(wordBank, text):
                 formattedText, numerator = stopword(token, formattedText, numerator)
     #4: If it is not a special case, and the token or its stripped form is not in the wordbank, color
         elif (token not in wordBank) and (stripAdj(token) not in wordBank):
-    #5: If the non-vocabulary word is a Proper Noun, color it gray
-            if tuples[tuplesCount][2] == 'NE':
+    #5L If the token is not a voacab word but a Proper Noun, color it gray
+            if tupDict[token] == 'NE':
                 numerator = numerator - 1
                 formattedText = re.sub(r'\b'+token+r'\b', formattedGray(token), formattedText)
     #6: otherwise, color red
@@ -132,7 +134,6 @@ def readability(wordBank, text):
                 formattedText = re.sub(r'\b'+token+r'\b', formattedRed(token), formattedText)
                 numerator = numerator - 1           
         prev = token
-        tuplesCount += 1
     #-----PREPARE THE DATA FOR THE HTML PAGE------------------------------------------------------
     formattedText = re.sub('\n', "<br>", formattedText)     # preserve line breaks in HTML code
     score = 0
