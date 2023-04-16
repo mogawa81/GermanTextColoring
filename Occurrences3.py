@@ -95,8 +95,9 @@ def readability(wordBank, text):
     numerator = denominator
     #2: remove punctuation except -, ., !
     tokens = unpunctuate(text)
+    tokenizeText = text.replace("\n", ".")
     #3: tokenize
-    tokens = nltk.tokenize.word_tokenize(text)
+    tokens = nltk.tokenize.word_tokenize(tokenizeText)
     #4: lemmatize for Proper Noun identification
     tagger_de = ht.HanoverTagger('morphmodel_ger.pgz')
     tuples = tagger_de.tag_sent(tokens)
@@ -147,7 +148,7 @@ def readability(wordBank, text):
                 
 #FOR TESTING
 def test():
-    wordBank = {"meine", 'können'}
+    wordBank = {"meine", 'können', 'ab'}
     f = open("sample3.txt", 'r')
     f = f.read()
     foundWords = readability(wordBank, f)
