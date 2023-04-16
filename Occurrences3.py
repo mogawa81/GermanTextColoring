@@ -96,6 +96,7 @@ def readability(wordBank, text):
     #2: remove punctuation except -, ., !
     tokens = unpunctuate(text)
     tokenizeText = text.replace("\n", ".")
+    tokenizeText = text.replace("\"", "")
     #3: tokenize
     tokens = nltk.tokenize.word_tokenize(tokenizeText)
     #4: lemmatize for Proper Noun identification
@@ -148,11 +149,11 @@ def readability(wordBank, text):
                 
 #FOR TESTING
 def test():
-    wordBank = {"meine", 'können', 'ab'}
+    wordBank = {"meine", 'können', 'ab', 'die'}
     f = open("sample3.txt", 'r')
     f = f.read()
     foundWords = readability(wordBank, f)
     print(foundWords["Text"], foundWords["Readability"])
     print(wordBank)
-#test() 
+test() 
     
