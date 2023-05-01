@@ -14,7 +14,7 @@ f = open("sample3.txt", 'r')
 g = f.read()
 f.close()
 tokens = nltk.word_tokenize(g)
-print(tokens)
+#print(tokens)
 #print("2",tagger_de.tag_sent(tokens))
 # print("3",tagger_de.analyze('vergangen'))
 # print("3",tagger_de.analyze('vergangene'))
@@ -52,12 +52,13 @@ f.close()
 f = open("sample5.txt", 'r')
 g = f.readlines()
 f.close()
-tokens = []
+#f = open("sample6.txt",'w')
+unique = []
 for line in g:
-    tokens.append(line)
-f = open("sample6.txt",'w')
-tokens = [*set(tokens)]
-for word in tokens:
-    f.write(word)
+    for word in line.split(" "):
+        if word not in unique:
+            unique.append(word)
+        #f.write(word)
+print(len(unique))
 
 

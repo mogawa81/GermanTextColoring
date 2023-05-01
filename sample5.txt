@@ -1,11 +1,14 @@
-abgehangen
+"Die Diagnose ist schwierig und langwierig, die Behandlungsmöglichkeiten sind überschaubar und die Entwicklung von entsprechenden Medikamenten teuer. Seltene Krankheiten betreffen rund 450.000 Personen in Österreich, ein großer Teil davon Kinder und Jugendliche. Nur rund sechs Prozent gelten als spezifisch medikamentös behandelbar. Der Forschungsbedarf ist enorm. Welche Hürden und Beschleuniger es dabei gibt und welche Rolle die Digitalisierung spielt, erklären Expertinnen und Experten im aktuellen Themenschwerpunkt von APA-Science.
 
+Rund 6.000 bis 8.000 Krankheitsbilder
+Eine Krankheit gilt in der Europäischen Union als selten, wenn nicht mehr als fünf von 10.000 Personen betroffen sind. Geschätzte fünf Prozent der Bevölkerung weisen eines der 6.000 bis 8.000 Krankheitsbilder auf. Der Weg zu einer korrekten Diagnose dauert hierzulande laut Fachleuten oft mehrere Jahre. „Was derartige Erkrankungen selten macht, sind die verschiedenen, meist genetischen, aber auch auto-immunologischen Ursachen“, erklärt Georg Stary, Experte von der Universitätsklinik für Dermatologie der Medizinischen Universität Wien und dem Ludwig Boltzmann Institute for Rare and Undiagnosed Diseases ~LBI-RUD~.
 
+Etwa 50 Prozent der seltenen Erkrankungen entfallen auf Kinder. „Ist die Erkrankung angeboren, wird ein schwerer Verlauf früh sichtbar. Das heißt aber gleichzeitig, dass die andere Hälfte erst im Erwachsenenalter diagnostiziert wird“, so Daniela Karall vom Department für Kinder- und Jugendheilkunde der Medizinischen Universität Innsbruck und Obfrau des Forums Seltene Krankheiten.
 
+Ein massiver Unterschied zu „klassischen“ Erkrankungen ist laut Karall, dass man etwa mit Diabetes zu jedem Praktiker gehen könne und eine Erstberatung bekommen werde. Bei seltenen Erkrankungen dagegen gehe das ~noch~ nicht. „Es sollte angestrebt werden, dass auch diesbezüglich Betroffene von der Diagnostik bis zur Betreuung wohnortnah versorgt werden. Die Expertise soll reisen, nicht der Patient“, meint Karall.
 
+„Dank des medizinischen und akademischen Fortschrittes wissen wir heute, dass sich unter großen Gruppen von Krankheiten häufig viele verschiedene Einzelerkrankungen finden“, verweist Kaan Boztug, Direktor des LBI RUD und Professor im Fachbereich Kinderheilkunde und Entzündungsforschung an der MedUni Wien, gegenüber APA-Science beispielsweise auf die Vielzahl an Tumorerkrankungen ~siehe „Seltene Krankheiten – Auf der Suche nach der Struktur“~. Der Anteil der seltenen Erkrankungen wachse mit einem immer besseren Verständnis der Komplexität: „Was oberflächlich gleich aussieht, ist noch lange nicht die gleiche Erkrankung.“
 
+Vieles was hierzulande an Forschung passiert, ist laut Expertinnen und Experten qualitativ sehr gut. „Es fehlen aber die konkreten Finanztöpfe, um einen gemeinsamen Prozess in Österreich anzuschieben, mit dem man internationale Sichtbarkeit bekommt“, umreißt Boztug die Situation. Hier kommen Österreichs Expertisezentren, die Vollmitglieder in einem Europäischen Referenznetzwerk ~ERN~ sind, ins Spiel. Sie sind hochspezialisierte klinische Einrichtungen, die im Sinne einer überregionalen Versorgung als zentrale Anlaufstellen für definierte Gruppen seltener Erkrankungen fungieren. Außerdem soll laut den Fachleuten die internationale Vernetzung der Expertinnen und Experten optimiert werden.
 
-
-
-
-
+Da es bei seltenen Krankheiten klarerweise geringe Fallzahlen gebe, „sind internationale Kollaborationen immens bedeutsam“, weiß auch Georg Stary, Experte von der Universitätsklinik für Dermatologie der Medizinischen Universität Wien und Co-Director des LBI-RUD. Die Zahl der bekannten seltenen Erkrankungen sei über die Jahre stetig gewachsen. „Früher wusste man nicht, was dahintersteckt und hat die Erkrankung anhand der klinischen Symptome beschrieben. Von diesen Symptomkomplexen ausgehend weiß man mittlerweile weit mehr, da man in manchen Fällen die verantwortlichen Gendefekte kennt“, so Stary."
